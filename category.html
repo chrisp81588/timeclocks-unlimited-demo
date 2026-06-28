@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shop — Time Clocks Unlimited</title>
+<meta name="description" content="Shop time clocks, break bell & buzzer systems, biometric terminals, date stamps and genuine supplies from Time Clocks Unlimited, LLC." />
+<meta name="theme-color" content="#0a1c2e" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230a1c2e'/%3E%3Cg fill='none' stroke='%23f26a1b' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='7'/%3E%3Cpath d='M12 8v4l3 1.6'/%3E%3C/g%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<main id="main"></main>
+
+<script src="catalog.js"></script>
+<script src="site.js"></script>
+<script>
+(function(){
+  const id = new URLSearchParams(location.search).get('cat') || CATEGORIES[0].id;
+  const cat = getCat(id);
+  const main = document.getElementById('main');
+  if(!cat){ main.innerHTML='<div class="wrap" style="padding:80px 24px"><h1>Category not found</h1><p><a href="index.html">Back to home</a></p></div>'; return; }
+  document.title = cat.name + ' — Time Clocks Unlimited';
+
+  function card(p){
+    const save = (p.list && p.list>p.price) ? p.list-p.price : 0;
+    const compat = p.compat && p.compat.length ? `<div class="compat"><b>Fits:</b> ${p.compat.slice(0,2).join(', ')}${p.compat.length>2?' +more':''}</div>` : '';
+    return `<div class="product reveal">
+      <a class="thumb" href="product.html?sku=${encodeURIComponent(p.id)}">
+        ${save?`<span class="sale-badge">Save $${save}</span>`:''}
+        <img src="${p.img}" alt="${p.name}" loading="lazy" />
+      </a>
+      <div class="pbody">
+        <span class="cat-tag">${p.brand||cat.short}</span>
+        <a href="product.html?sku=${encodeURIComponent(p.id)}"><h4>${p.name}</h4></a>
+        <div class="pmodel">${p.model||''}</div>
+        ${compat}
+        <div class="price-row">
+          <span class="price">${fmt(p.price)}</span>
+          ${p.list&&p.list>p.price?`<span class="was">${fmt(p.list)}</span>`:''}
+          ${save?`<span class="save">Save $${save}</span>`:''}
+        </div>
+      </div>
+      <button class="btn btn-primary padd" data-add>Add to Cart ${icon('cart','currentColor').replace('width="24" height="24"','width="16" height="16"')}</button>
+    </div>`;
+  }
+
+  const prods = productsIn(id);
+  // group by sub
+  const groups = {};
+  prods.forEach(p=>{ const k=p.sub||'__all'; (groups[k]=groups[k]||[]).push(p); });
+  const order = cat.subs && cat.subs.length ? cat.subs.concat(['__all']) : Object.keys(groups);
+  const seen=new Set();
+  let body='';
+  order.forEach(k=>{
+    if(!groups[k]||seen.has(k)) return; seen.add(k);
+    const title = k==='__all' ? null : k;
+    body += `<section class="block" style="padding:34px 0 10px"><div class="wrap">
+      ${title?`<div class="subhead"><h2>${title}</h2><span class="ln"></span><span class="cnt">${groups[k].length} products</span></div>`:''}
+      <div class="prod-grid">${groups[k].map(card).join('')}</div>
+    </div></section>`;
+  });
+
+  const benefits = (cat.benefits||[]).map(b=>`<div class="benefit reveal"><span class="bi">${icon('check','#fff').replace('width="24" height="24"','width="20" height="20"')}</span><h4>${b.t}</h4><p>${b.d}</p></div>`).join('');
+  const benefitBlock = cat.benefits ? `<section class="block" style="padding:40px 0 0"><div class="wrap">
+      <div style="text-align:center;max-width:640px;margin:0 auto 8px"><span class="eyebrow">Why NetBell IP Paging</span></div>
+      <div class="benefits">${benefits}</div></div></section>` : '';
+
+  main.innerHTML = `
+  <div class="cat-hero"><div class="wrap">
+    <div class="crumb" style="color:#9fb8cf;padding:0 0 6px"><a href="index.html" style="color:#9fb8cf">Home</a> › <span style="color:#fff">${cat.name}</span></div>
+    <h1>${cat.name}</h1>
+    <p>${cat.blurb}</p>
+    ${cat.subs?`<div class="subchips">${cat.subs.map(s=>`<span class="subchip">${s}</span>`).join('')}</div>`:''}
+  </div></div>
+  ${benefitBlock}
+  <div class="wrap"><div class="toolbar" style="margin-top:30px">
+    <span class="count">${prods.length} products</span>
+    <select id="sortSel" aria-label="Sort">
+      <option value="pop">Most Popular</option>
+      <option value="low">Price: Low to High</option>
+      <option value="high">Price: High to Low</option>
+    </select>
+  </div></div>
+  <div id="groups">${body}</div>
+  <section class="block" style="background:var(--bg);margin-top:30px"><div class="wrap" style="text-align:center;max-width:640px">
+    <span class="eyebrow">Not sure which model?</span>
+    <h2 style="font-size:clamp(24px,3vw,34px);margin:12px 0 12px">Call us — we'll spec it for you.</h2>
+    <p style="color:var(--slate);margin-bottom:22px">Personal service direct from the owner is the main difference in our company. Tell us your facility and we'll match the right system.</p>
+    <a href="tel:8887341283" class="btn btn-primary">${icon('phone')} Call 888-734-1283</a>
+  </div></section>`;
+
+  // re-run reveal for injected content
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // sort
+  document.getElementById('sortSel').addEventListener('change', e=>{
+    const v=e.target.value;
+    document.querySelectorAll('.prod-grid').forEach(grid=>{
+      const cards=[...grid.children];
+      cards.sort((a,b)=>{
+        const pa=+a.querySelector('.price').textContent.replace(/[^0-9.]/g,'');
+        const pb=+b.querySelector('.price').textContent.replace(/[^0-9.]/g,'');
+        return v==='low'?pa-pb : v==='high'?pb-pa : 0;
+      });
+      if(v!=='pop') cards.forEach(c=>grid.appendChild(c));
+    });
+  });
+})();
+</script>
+</body>
+</html>
