@@ -3,13 +3,10 @@ const IMG = 'assets/products/';
 
 const CATEGORIES = [
   {
-    id: 'netbell-pa',
-    name: 'NetBell IP Public Address',
-    short: 'IP Paging & PA Systems',
+    id: 'netbell-pa', name: 'NetBell IP Public Address', short: 'IP Paging & PA Systems', nav: 'IP Paging',
     tagline: 'Mass communication over your existing network',
     blurb: 'Connect every speaker across multiple buildings with a single network cable. Daily announcements, scheduled break bells, fire drills and OSHA-compliant emergency alerts — all managed from a simple desktop app or web browser.',
-    icon: 'speaker',
-    color: '#2563eb',
+    icon: 'speaker', color: '#2563eb',
     benefits: [
       { t: 'Reduced Wiring Costs', d: 'Leverage your existing network — minimize expensive cabling and labor.' },
       { t: 'Simple DIY Installation', d: 'Install it yourself with just a screwdriver. Set up in minutes, no contractors.' },
@@ -20,58 +17,48 @@ const CATEGORIES = [
     ]
   },
   {
-    id: 'break-bells',
-    name: 'Break Bells & Buzzers',
-    short: 'School, Office & Factory',
-    tagline: 'Web-scheduled bell & buzzer systems',
-    blurb: 'Set up a facility-wide break bell system in minutes with our network-enabled LINORTEK NetBell solution. Schedule break-time alerts from any web browser — ready-to-deploy or budget-friendly DIY — for schools, warehouses and factories.',
-    icon: 'bell',
-    color: '#f26a1b',
+    id: 'break-bells', name: 'Break Bells & Buzzers', short: 'School, Office & Factory', nav: 'Break Bells',
+    tagline: 'Web & wired bell / buzzer systems',
+    blurb: 'Set up a facility-wide break bell system in minutes. Choose network-enabled LINORTEK NetBell systems scheduled from any web browser, or classic wired timer-switch bell & buzzer assemblies — for schools, warehouses and factories.',
+    icon: 'bell', color: '#f26a1b',
     subs: ['Web-Based / TCP-IP Systems', 'Wired Timer Switches']
   },
   {
-    id: 'software',
-    name: 'Time & Attendance',
-    short: 'Biometric Clocks & Software',
+    id: 'software', name: 'Time & Attendance', short: 'Biometric Clocks & Software', nav: 'Biometric Clocks',
     tagline: 'Facial recognition, fingerprint & cloud software',
-    blurb: 'Touch-free facial-recognition and fingerprint terminals that stop "buddy punching" and flow straight into payroll. Cloud time management with PTO tracking, mobile app and offline mode — plus uAttend and Qqest software lines.',
-    icon: 'face',
-    color: '#0a1c2e',
+    blurb: 'Touch-free facial-recognition and fingerprint terminals that stop "buddy punching" and flow straight into payroll. uAttend cloud clocks with mobile app & PTO tracking, and Qqest TimeForce 2 biometric systems trusted by 46,000+ businesses.',
+    icon: 'face', color: '#0a1c2e',
     subs: ['uAttend Software', 'Qqest Software']
   },
   {
-    id: 'time-clocks',
-    name: 'Time Clocks',
-    short: 'Amano Punch & Electronic',
+    id: 'time-clocks', name: 'Time Clocks', short: 'Amano Punch & Electronic', nav: 'Amano Clocks',
     tagline: 'Proven Amano time recorders',
     blurb: 'Reliable Amano electronic and punch-card time recorders — the workhorses of timekeeping. Authorized dealer; we service what we sell.',
-    icon: 'clock',
-    color: '#0891b2',
+    icon: 'clock', color: '#0891b2',
     subs: ['Amano Time Clocks']
   },
   {
-    id: 'date-stamps',
-    name: 'Date & Numbering Stamps',
-    short: 'Widmer Stamps',
+    id: 'date-stamps', name: 'Date & Numbering Stamps', short: 'Widmer Stamps', nav: 'Date Stamps',
     tagline: 'Authorized Widmer dealer',
     blurb: 'A complete line of Widmer date stamps, time stamps, check signers and embossers for document control in mailrooms, banks and validation centers. We service what we sell — call us for any model.',
-    icon: 'stamp',
-    color: '#7c3aed',
+    icon: 'stamp', color: '#7c3aed',
     subs: ['Widmer Date Stamps']
   },
   {
-    id: 'ribbons',
-    name: 'Ribbons, Cards & Supplies',
-    short: 'Genuine Supplies',
+    id: 'ribbons', name: 'Ribbons, Cards & Supplies', short: 'Genuine Supplies', nav: 'Supplies',
     tagline: 'Keep your clocks running clean',
     blurb: 'Genuine replacement ribbons and time cards engineered for sharp, smudge-free imprints. Check the compatibility list on each item to match your exact clock model.',
-    icon: 'supplies',
-    color: '#16a34a'
+    icon: 'supplies', color: '#16a34a'
+  },
+  {
+    id: 'wireless', name: 'Wireless Break Systems', short: 'Wireless Bells & Paging', nav: 'Wireless',
+    tagline: 'Cordless break bells, pagers & horn speakers',
+    blurb: 'Durable, compact wireless break-bell and paging systems with backup battery — add a speaker anywhere without running wire. Indoor and outdoor units work as pagers, bells, sirens, strobe lights and horn speakers, operating off relay antenna signals.',
+    icon: 'speaker', color: '#0d9488', empty: true
   }
 ];
 
-/* Each product: id (=image basename), cat, sub, name, model (subtitle line on the real site),
-   img, price, list (was-price or null), brand, short (card blurb), bullets[], specs{}, compat[], desc (long) */
+/* product fields: id (=image basename), cat, sub, name, model, img, price, list, brand, short, bullets[], specs{}, compat[], desc */
 const PRODUCTS = [
   /* ---------- NetBell IP Public Address ---------- */
   { id:'01-910-00057', cat:'netbell-pa', name:'NetBell Warehouse / Factory Paging System', model:'Facility-wide IP paging & break-time system', img:IMG+'01-910-00057-1.jpg', price:2566, list:null, brand:'Linortek',
@@ -91,7 +78,7 @@ const PRODUCTS = [
     bullets:['One-button instant emergency activation','Real-time voice, pre-recorded or automated triggers','10,000 sq ft coverage per speaker','OSHA-compliant employee alarm; deploys in hours'],
     desc:'Deliver critical information through live voice, pre-recorded messages or automated triggers from connected systems — built for manufacturing facilities, distribution centers and industrial complexes requiring immediate emergency communication.' },
 
-  /* ---------- Break Bells & Buzzers (Web-Based / TCP-IP — Linortek) ---------- */
+  /* ---------- Break Bells & Buzzers — Web-Based / TCP-IP (Linortek) ---------- */
   { id:'01-910-00014', cat:'break-bells', sub:'Web-Based / TCP-IP Systems', name:'NetBell-2 TCP/IP Web-Based Bell Controller', model:'Controller only — up to 500 event schedules', img:IMG+'01-910-00014-1.jpg', price:425, list:468, brand:'Linortek',
     short:'The network "brains" of a school/factory bell system. Add your own bells or buzzers; schedule up to 500 events from any browser.',
     bullets:['Up to 500 programmable event schedules','No dedicated PC or extra software required','Schedule from any computer on your network'],
@@ -155,31 +142,90 @@ const PRODUCTS = [
     bullets:['High-output 90 dBA @ 30′ bell','Fully automated programmable schedule','No extra software; runs independently of your PC','Instant schedule changes from any networked computer'],
     desc:'Engineered for large, noisy industrial spaces — an incredibly loud bell guaranteed to cut through industrial noise, in a self-contained, maintenance-free design built for harsh environments.' },
 
-  /* ---------- Time & Attendance — Biometric Clocks ---------- */
-  { id:'JR2000', cat:'software', name:'JR2000 Time Clock', model:'Touch tablet with biometric finger scanner', img:IMG+'JR2000-1.png', price:179, list:null, brand:'Velocity',
-    short:'Affordable touch-tablet time clock with a biometric fingerprint scanner — a simple, accurate entry point to digital timekeeping.',
-    bullets:['Biometric fingerprint punch','Touch-tablet interface','Cloud-ready time tracking'],
-    desc:'A budget-friendly biometric terminal that brings accurate, tamper-resistant punching to small teams.' },
-  { id:'DR2000', cat:'software', name:'DR2000 Time Clock', model:'Touch-free voice control & facial recognition', img:IMG+'DR2000-1.jpg', price:299, list:null, brand:'Velocity',
+  /* ---------- Break Bells & Buzzers — Wired Timer Switches ---------- */
+  { id:'AP21LV', cat:'break-bells', sub:'Wired Timer Switches', name:'AP21LV Timer Switch', model:'Programmable wired bell/buzzer timer', img:IMG+'AP21LV-1.jpg', price:240, list:null, brand:'Wired System',
+    short:'Programmable wired timer switch to drive a bell or buzzer on a daily or per-day-of-week schedule.',
+    bullets:['Easily programmable schedules','Daily or per-weekday timing','Drives a bell or buzzer'] },
+  { id:'AP21-BP1', cat:'break-bells', sub:'Wired Timer Switches', name:'AP21-BP1 Break Bell System', model:'Complete wired break-bell system', img:IMG+'AP21-BP1-1.jpg', price:485, list:null, brand:'Wired System',
+    short:'Complete wired break-bell system with a pleasant-tone bell — reliable and easily schedulable.',
+    bullets:['Pleasant-tone bell included','Reliable, durable assembly','Easily programmable'] },
+  { id:'MC41LV', cat:'break-bells', sub:'Wired Timer Switches', name:'MC41LV Timer Switch', model:'Advanced multi-schedule wired timer', img:IMG+'MC41LV-1.jpg', price:499, list:null, brand:'Wired System',
+    short:'Advanced wired programmable timer switch for multi-schedule bell/buzzer control.',
+    bullets:['Multiple programmable schedules','Drives bell or buzzer','Durable, reliable'] },
+  { id:'MC41-BP1', cat:'break-bells', sub:'Wired Timer Switches', name:'MC41-BP1 Break Bell System', model:'Wired break-bell on MC41 timer', img:IMG+'MC41-BP1-1.jpg', price:580, list:null, brand:'Wired System',
+    short:'Wired break-bell system built on the advanced MC41 programmable timer.',
+    bullets:['MC41 programmable timer','Pleasant-tone bell','Flexible scheduling'] },
+  { id:'AP21-BH1-TXO', cat:'break-bells', sub:'Wired Timer Switches', name:'AP21-BH1 Break Buzzer System (TXO)', model:'Wired buzzer system w/ TXO chip', img:IMG+'AP21-BH1-TXO-1.jpg', price:645, list:null, brand:'Wired System',
+    short:'Wired break-buzzer system with TXO chip for reliable scheduled alerts.',
+    bullets:['TXO chip for reliability','Loud break buzzer','Programmable schedule'] },
+  { id:'AP21-BH2-TXO', cat:'break-bells', sub:'Wired Timer Switches', name:'AP21-BH2 Extra-Loud Break Buzzer System', model:'Extra buzzer + heavy-duty supply, 100 dB @ 10 ft', img:IMG+'AP21-BH2-TXO-1.jpg', price:895, list:null, brand:'Wired System',
+    short:'Extra-loud buzzer system (100 dB @ 10 ft) with an extra buzzer and heavy-duty power supply, TXO chip.',
+    bullets:['100 dB @ 10 ft — extra loud','Includes extra buzzer','Heavy-duty power supply','TXO chip'],
+    specs:{ 'Loudness':'100 dB @ 10 ft', 'Buzzers':'2', 'Power':'Heavy-duty supply' } },
+  { id:'MC41-BH1', cat:'break-bells', sub:'Wired Timer Switches', name:'MC41-BH1 Break Buzzer System', model:'Wired buzzer on MC41 timer', img:IMG+'MC41-BH1-1.jpg', price:875, list:null, brand:'Wired System',
+    short:'Wired break-buzzer system on the advanced MC41 programmable timer.',
+    bullets:['MC41 programmable timer','Loud break buzzer','Flexible multi-schedule'] },
+  { id:'MC4181NX', cat:'break-bells', sub:'Wired Timer Switches', name:'MC4181NX Master Clock', model:'Wired master clock for facility sync', img:IMG+'MC4181NX-1.jpg', price:1100, list:1200, brand:'Wired System',
+    short:'Wired master clock to synchronize bells, buzzers and clocks across your facility.',
+    bullets:['Synchronizes facility-wide signaling','Reliable master time source','Drives multiple zones'] },
+  { id:'F-4436PB1', cat:'break-bells', sub:'Wired Timer Switches', name:'F-4436PB1 Push-Button Bell System', model:'Manual push-button bell', img:IMG+'F-4436PB1-1.jpg', price:370, list:null, brand:'Wired System',
+    short:'Manual push-button bell system for on-demand ringing.',
+    bullets:['Push-button on-demand ring','Simple, reliable','Durable assembly'] },
+  { id:'F350PB1', cat:'break-bells', sub:'Wired Timer Switches', name:'Push-Button Buzzer System', model:'Manual push-button buzzer', img:IMG+'F350PB1-1.jpg', price:435, list:null, brand:'Wired System',
+    short:'Manual push-button buzzer system for on-demand industrial alerts.',
+    bullets:['Push-button on-demand buzzer','Loud industrial tone','Simple operation'] },
+  { id:'F-TG4X', cat:'break-bells', sub:'Wired Timer Switches', name:'Tone Generator', model:'Tone generator for wired signaling', img:IMG+'F-TG4X-1.jpg', price:225, list:null, brand:'Wired System',
+    short:'Tone generator for wired bell/buzzer signaling systems.',
+    bullets:['Generates signaling tones','Pairs with wired systems','Reliable'] },
+  { id:'MC22-BH1', cat:'break-bells', sub:'Wired Timer Switches', name:'MC22-BH1 Break Buzzer System', model:'Wired buzzer system', img:IMG+'MC22-BH1-1.jpg', price:845, list:null, brand:'Wired System',
+    short:'Wired MC22-series break-buzzer system for scheduled industrial alerts.',
+    bullets:['Programmable schedule','Loud break buzzer','Durable assembly'] },
+  { id:'MC22-BH2', cat:'break-bells', sub:'Wired Timer Switches', name:'MC22-BH2 Break Buzzer System', model:'Wired dual-buzzer system', img:IMG+'MC22-BH2-1.jpg', price:1070, list:null, brand:'Wired System',
+    short:'Wired MC22-series break-buzzer system with extra buzzer for wider coverage.',
+    bullets:['Two buzzers for wider coverage','Programmable schedule','Durable assembly'] },
+  { id:'F-350-24A1', cat:'break-bells', sub:'Wired Timer Switches', name:'F-350-24A1 Extra Break Buzzer', model:'Add-on extra buzzer', img:IMG+'F-350-24A1-1.jpg', price:318, list:null, brand:'Wired System',
+    short:'Add-on extra buzzer to extend coverage of your wired break system.',
+    bullets:['Extends coverage','Matches wired systems','Loud industrial tone'] },
+  { id:'Heavy-Duty-Power-Supply', cat:'break-bells', sub:'Wired Timer Switches', name:'Heavy-Duty Power Supply', model:'Replacement / upgrade power supply', img:IMG+'Heavy-Duty-Power-Supply-1.jpg', price:75, list:null, brand:'Accessory',
+    short:'Heavy-duty power supply for wired bell and buzzer systems.',
+    bullets:['Heavy-duty rated','For wired bell/buzzer systems'] },
+  { id:'8901-1411-R', cat:'break-bells', sub:'Wired Timer Switches', name:'Relay / Transformer Assembly', model:'Replacement relay/transformer', img:IMG+'8901-1411-R-1.jpg', price:225, list:null, brand:'Accessory',
+    short:'Replacement relay / transformer assembly for wired break systems.',
+    bullets:['Relay + transformer','Replacement / spare part'] },
+  { id:'1109', cat:'break-bells', sub:'Wired Timer Switches', name:'Key Lock Box', model:'Locking enclosure', img:IMG+'1109-1.jpg', price:138, list:null, brand:'Accessory',
+    short:'Key lock box to secure your wired timer/controller from tampering.',
+    bullets:['Locking enclosure','Tamper protection'] },
+  { id:'F-4436-24A1', cat:'break-bells', sub:'Wired Timer Switches', name:'Extra Bell Assemblies', model:'Add-on bell assembly', img:IMG+'F-4436-24A1-1.jpg', price:225, list:null, brand:'Accessory',
+    short:'Extra bell assembly to add coverage to your wired break-bell system.',
+    bullets:['Add-on bell','Extends coverage'] },
+
+  /* ---------- Time & Attendance — uAttend (cloud biometric clocks) ---------- */
+  { id:'JR2000', cat:'software', sub:'uAttend Software', name:'uAttend JR2000 Time Clock', model:'Touch tablet with biometric finger scanner', img:IMG+'JR2000-1.png', price:179, list:null, brand:'uAttend',
+    short:'Affordable touch-tablet cloud time clock with a biometric fingerprint scanner and RFID reader — Wi-Fi or LAN, free lifetime support, no contracts.',
+    bullets:['Biometric fingerprint + RFID badge','Wi-Fi / LAN connectivity','Cloud dashboard, reports & payroll export','Requires uAttend monthly plan (from $29/mo)'],
+    desc:'uAttend’s affordable, cloud-connected time & attendance system features easy setup and free lifetime support. Track missed punches and who’s in, run dozens of reports, and export hours to any payroll system in seconds. (All uAttend clocks require a monthly cloud subscription.)' },
+  { id:'DR2000', cat:'software', sub:'uAttend Software', name:'uAttend DR2000 Time Clock', model:'Touch-free voice control & facial recognition', img:IMG+'DR2000-1.jpg', price:299, list:null, brand:'uAttend',
     short:'Touch-free facial recognition (even with masks) plus voice control — eliminates "buddy punching" and keeps surfaces hygienic.',
     bullets:['Facial recognition, voice, RFID badge & PIN','Recognizes faces even with masks on','Offline mode stores punches during outages','Dedicated mobile app; cloud software, payroll export'],
-    desc:'A cutting-edge, cloud-based terminal for the best workforce management. View time cards, track PTO accruals and export directly to major payroll systems — secure, touch-free and uninterrupted timekeeping.',
+    desc:'A cutting-edge, cloud-based terminal for the best workforce management. View time cards, track PTO accruals and export directly to major payroll systems — secure, touch-free and uninterrupted timekeeping. (Requires uAttend monthly plan.)',
     specs:{ 'Punch methods':'Face, voice, RFID, PIN', 'Masks':'Recognized', 'Connectivity':'Wi-Fi / LAN', 'Offline':'Yes, stores punches', 'App':'Mobile app included' } },
-  { id:'DR2500', cat:'software', name:'DR2500 Time Clock', model:'Facial recognition + temperature reader', img:IMG+'DR2500-1.jpg', price:399, list:null, brand:'Velocity',
+  { id:'DR2500', cat:'software', sub:'uAttend Software', name:'uAttend DR2500 Time Clock', model:'Facial recognition + temperature reader', img:IMG+'DR2500-1.jpg', price:399, list:null, brand:'uAttend',
     short:'All the DR2000 touch-free facial & voice recognition, plus an integrated temperature reader for added workplace safety.',
-    bullets:['Touch-free facial & voice recognition','Integrated temperature reading','Integrates into existing payroll/time software','Wi-Fi / LAN real-time data'],
-    desc:'Adds advanced facial recognition and temperature screening as a front-end to your existing best-in-class time system — automating the most error-prone part of timekeeping: the punch itself.' },
-  { id:'V800', cat:'software', name:'Velocity 800 Time Clock', model:'Fingerprint & on-demand technology', img:IMG+'V800-1.jpg', price:1290, list:null, brand:'Velocity',
-    short:'Professional fingerprint time clock with on-demand technology for accurate, high-volume employee time tracking.',
-    bullets:['Biometric fingerprint','On-demand technology','Built for everyday workforce use'],
-    desc:'A robust fingerprint terminal from the Velocity line, designed for reliable daily punching across your workforce.' },
-  { id:'V850', cat:'software', name:'Velocity 850 Time Clock', model:'Fingerprint + Dept Transfer, Job Costing, Tips', img:IMG+'V850-1.jpg', price:1790, list:null, brand:'Velocity',
+    bullets:['Touch-free facial & voice recognition','Integrated temperature reading','Wi-Fi / LAN real-time data','Cloud software & mobile app'],
+    desc:'Adds advanced facial recognition and temperature screening — automating the most error-prone part of timekeeping: the punch itself. Functions standalone or as a front-end to your existing system. (Requires uAttend monthly plan.)' },
+
+  /* ---------- Time & Attendance — Qqest (TimeForce 2 / Velocity) ---------- */
+  { id:'V800', cat:'software', sub:'Qqest Software', name:'Velocity 800 Time Clock', model:'Fingerprint & on-demand technology', img:IMG+'V800-1.jpg', price:1290, list:null, brand:'Qqest',
+    short:'Professional fingerprint time clock with on-demand technology, running on Qqest TimeForce 2 — trusted by 46,000+ businesses.',
+    bullets:['Biometric fingerprint','On-demand technology','Runs on Qqest TimeForce 2 software'],
+    desc:'A robust fingerprint terminal from the Velocity line on Qqest’s elite TimeForce 2 platform — 20+ years of industry leadership for reliable daily punching across your workforce.' },
+  { id:'V850', cat:'software', sub:'Qqest Software', name:'Velocity 850 Time Clock', model:'Fingerprint + Dept Transfer, Job Costing, Tips', img:IMG+'V850-1.jpg', price:1790, list:null, brand:'Qqest',
     short:'Velocity 850 adds department transfer, job costing and tips keys — ideal for businesses that bill by job or track tipped labor.',
-    bullets:['Fingerprint + on-demand technology','Department transfer & job costing','Tips keys for hospitality'],
-    desc:'A feature-rich biometric terminal for operations that need to allocate labor to departments or jobs and capture tips at the clock.' },
-  { id:'V850R', cat:'software', name:'Velocity 850 Rugged', model:'Worksite-ready: Ethernet, POE or Wireless', img:IMG+'V850R-1.jpg', price:2290, list:null, brand:'Velocity',
+    bullets:['Fingerprint + on-demand technology','Department transfer & job costing','Tips keys for hospitality','Qqest TimeForce 2 software'],
+    desc:'A feature-rich biometric terminal for operations that allocate labor to departments or jobs and capture tips at the clock.' },
+  { id:'V850R', cat:'software', sub:'Qqest Software', name:'Velocity 850 Rugged', model:'Worksite-ready: Ethernet, POE or Wireless', img:IMG+'V850R-1.jpg', price:2290, list:null, brand:'Qqest',
     short:'A ruggedized Velocity 850 designed for worksites, with three connectivity options — Ethernet, POE or Wireless.',
-    bullets:['Rugged housing for job sites','Dept transfer, job costing, tips keys','Three options: Ethernet, POE, Wireless'],
+    bullets:['Rugged housing for job sites','Dept transfer, job costing, tips keys','Three options: Ethernet, POE, Wireless','Qqest TimeForce 2 software'],
     desc:'Built to take on demanding worksites while keeping all the job-costing power of the Velocity 850 — choose the connectivity that fits your environment.' },
 
   /* ---------- Time Clocks — Amano ---------- */
@@ -258,7 +304,16 @@ const PRODUCTS = [
 ];
 
 /* helpers */
-function fmt(n){ return '$' + n.toLocaleString('en-US'); }
+function fmt(n){ return '$' + Number(n).toLocaleString('en-US'); }
 function getCat(id){ return CATEGORIES.find(c=>c.id===id); }
 function getProduct(id){ return PRODUCTS.find(p=>p.id===id); }
 function productsIn(catId){ return PRODUCTS.filter(p=>p.cat===catId); }
+function searchProducts(q){
+  q=(q||'').trim().toLowerCase(); if(!q) return [];
+  const terms=q.split(/\s+/);
+  return PRODUCTS.map(p=>{
+    const hay=[p.name,p.model,p.brand,p.sub,getCat(p.cat)&&getCat(p.cat).name,(p.compat||[]).join(' ')].join(' ').toLowerCase();
+    let score=0; terms.forEach(t=>{ if(hay.includes(t)) score++; if((p.name||'').toLowerCase().includes(t)) score++; });
+    return {p,score};
+  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).map(x=>x.p);
+}

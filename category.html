@@ -33,7 +33,7 @@
         <img src="${p.img}" alt="${p.name}" loading="lazy" />
       </a>
       <div class="pbody">
-        <span class="cat-tag">${p.brand||cat.short}</span>
+        <span class="cat-tag">${p.brand||p.sub||cat.short}</span>
         <a href="product.html?sku=${encodeURIComponent(p.id)}"><h4>${p.name}</h4></a>
         <div class="pmodel">${p.model||''}</div>
         ${compat}
@@ -43,7 +43,7 @@
           ${save?`<span class="save">Save $${save}</span>`:''}
         </div>
       </div>
-      <button class="btn btn-primary padd" data-add>Add to Cart ${icon('cart','currentColor').replace('width="24" height="24"','width="16" height="16"')}</button>
+      <button class="btn btn-primary padd" data-add data-sku="${p.id}">Add to Cart ${icon('cart','currentColor').replace('width="24" height="24"','width="16" height="16"')}</button>
     </div>`;
   }
 
@@ -76,7 +76,7 @@
     ${cat.subs?`<div class="subchips">${cat.subs.map(s=>`<span class="subchip">${s}</span>`).join('')}</div>`:''}
   </div></div>
   ${benefitBlock}
-  <div class="wrap"><div class="toolbar" style="margin-top:30px">
+  ${prods.length ? `<div class="wrap"><div class="toolbar" style="margin-top:30px">
     <span class="count">${prods.length} products</span>
     <select id="sortSel" aria-label="Sort">
       <option value="pop">Most Popular</option>
@@ -84,7 +84,12 @@
       <option value="high">Price: High to Low</option>
     </select>
   </div></div>
-  <div id="groups">${body}</div>
+  <div id="groups">${body}</div>` : `<section class="block"><div class="wrap"><div class="empty-state">
+    <span class="ei">${icon(cat.icon||'phone','currentColor').replace('width="24" height="24"','width="30" height="30"')}</span>
+    <h3>Tell us what you need</h3>
+    <p>We configure ${cat.name.toLowerCase()} to fit your facility — indoor or outdoor, the right range and signal devices. Call and we'll spec the right setup for you.</p>
+    <a href="tel:8887341283" class="btn btn-primary">${icon('phone')} Call 888-734-1283</a>
+  </div></div></section>`}
   <section class="block" style="background:var(--bg);margin-top:30px"><div class="wrap" style="text-align:center;max-width:640px">
     <span class="eyebrow">Not sure which model?</span>
     <h2 style="font-size:clamp(24px,3vw,34px);margin:12px 0 12px">Call us — we'll spec it for you.</h2>
@@ -97,7 +102,8 @@
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
   // sort
-  document.getElementById('sortSel').addEventListener('change', e=>{
+  const ss=document.getElementById('sortSel');
+  if(ss) ss.addEventListener('change', e=>{
     const v=e.target.value;
     document.querySelectorAll('.prod-grid').forEach(grid=>{
       const cards=[...grid.children];

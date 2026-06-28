@@ -46,7 +46,7 @@
         <p class="desc">${p.short||''}</p>
         ${bullets?`<ul class="bul">${bullets}</ul>`:''}
         <div class="actions">
-          <button class="btn btn-primary" data-add>Add to Cart ${icon('cart').replace('width="24" height="24"','width="16" height="16"')}</button>
+          <button class="btn btn-primary" data-add data-sku="${p.id}">Add to Cart ${icon('cart').replace('width="24" height="24"','width="16" height="16"')}</button>
           <a href="tel:8887341283" class="btn btn-light">${icon('phone').replace('width="24" height="24"','width="16" height="16"')} Call to order</a>
         </div>
         ${specs}
@@ -74,7 +74,7 @@
       <div class="pbody"><span class="cat-tag">${x.brand||cat.short}</span>
       <a href="product.html?sku=${encodeURIComponent(x.id)}"><h4>${x.name}</h4></a>
       <div class="price-row"><span class="price">${fmt(x.price)}</span>${x.list&&x.list>x.price?`<span class="was">${fmt(x.list)}</span>`:''}</div></div>
-      <button class="btn btn-primary padd" data-add>Add to Cart</button>
+      <button class="btn btn-primary padd" data-add data-sku="${x.id}">Add to Cart</button>
     </div>`;
   }).join('');
 

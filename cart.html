@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Your Cart — Time Clocks Unlimited</title>
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#0a1c2e" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230a1c2e'/%3E%3Cg fill='none' stroke='%23f26a1b' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='7'/%3E%3Cpath d='M12 8v4l3 1.6'/%3E%3C/g%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<main id="main"></main>
+<script src="catalog.js"></script>
+<script src="site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const main=document.getElementById('main');
+  const FREE=99;
+
+  function lineItems(){ return window.Cart.get().map(i=>({...i, p:getProduct(i.sku)})).filter(x=>x.p); }
+  function subtotal(items){ return items.reduce((s,x)=>s+x.p.price*x.qty,0); }
+
+  function render(){
+    const items=lineItems();
+    if(!items.length){
+      main.innerHTML=`<section class="block"><div class="wrap"><div class="empty-state">
+        <span class="ei">${icon('cart','currentColor').replace('width="24" height="24"','width="30" height="30"')}</span>
+        <h3>Your cart is empty</h3>
+        <p>Browse the catalog to add time clocks, break-bell systems, stamps or supplies.</p>
+        <a href="index.html" class="btn btn-primary">Continue shopping</a>
+      </div></div></section>`;
+      return;
+    }
+    const sub=subtotal(items), count=items.reduce((n,x)=>n+x.qty,0);
+    const free = sub>=FREE;
+    const rows=items.map(x=>`
+      <div class="cart-item" data-sku="${x.p.id}">
+        <div class="ci-img"><img src="${x.p.img}" alt="${x.p.name}"/></div>
+        <div class="ci-mid">
+          <div class="ci-name"><a href="product.html?sku=${encodeURIComponent(x.p.id)}">${x.p.name}</a></div>
+          <div class="ci-model">${x.p.brand||x.p.sub||''}${x.p.model?' · '+x.p.model:''}</div>
+          <div class="ci-price">${fmt(x.p.price)} <span style="font-weight:400;color:var(--slate-light);font-size:12px">each</span></div>
+          <div class="qty"><button data-dec aria-label="Decrease">−</button><span>${x.qty}</span><button data-inc aria-label="Increase">+</button></div>
+        </div>
+        <div class="ci-right">
+          <div class="ci-line">${fmt(x.p.price*x.qty)}</div>
+          <button class="ci-remove" data-remove>✕ Remove</button>
+        </div>
+      </div>`).join('');
+
+    main.innerHTML=`
+    <div class="wrap">
+      <div class="crumb"><a href="index.html">Home</a> › <span>Cart</span></div>
+      <h1 style="font-size:clamp(26px,3.4vw,38px);margin:6px 0 22px">Your Cart <span style="color:var(--slate-light);font-weight:500;font-size:.6em">(${count} item${count===1?'':'s'})</span></h1>
+      <div class="cart-wrap">
+        <div class="cart-list">${rows}
+          <a href="index.html" style="font-size:14px;color:var(--orange-dark);font-weight:600;display:inline-flex;align-items:center;gap:6px;margin-top:6px">${icon('arrow').replace('width="24" height="24"','width="15" height="15"').replace('M5 12h14M13 6l6 6-6 6','M19 12H5M11 6l-6 6 6 6')} Continue shopping</a>
+        </div>
+        <div class="summary">
+          <h3>Order Summary</h3>
+          <div class="freebar">${free?'✓ Your order qualifies for <b>free shipping</b>.':`Add <b>${fmt(FREE-sub)}</b> more to qualify for free shipping.`}</div>
+          <div class="ln"><span>Subtotal</span><span>${fmt(sub)}</span></div>
+          <div class="ln"><span>Shipping</span><span>${free?'Free':'Calculated at checkout'}</span></div>
+          <div class="ln total"><span>Total</span><span>${fmt(sub)}</span></div>
+          <form class="checkout-form" id="coForm" novalidate>
+            <div><label>First name</label><input name="fn" required></div>
+            <div><label>Last name</label><input name="ln" required></div>
+            <div class="full"><label>Business email</label><input type="email" name="email" required></div>
+            <div><label>Phone</label><input type="tel" name="phone"></div>
+            <div><label>Company</label><input name="company"></div>
+            <div class="full"><label>Shipping address</label><input name="addr" placeholder="Street, City, State, ZIP"></div>
+            <button class="btn btn-primary full" type="submit" style="margin-top:4px;justify-content:center">Place Order · ${fmt(sub)}</button>
+          </form>
+          <p class="demo-note">🔒 Demo checkout — this is a redesign concept; no payment is processed and no order is placed. Questions? Call 888-734-1283.</p>
+        </div>
+      </div>
+    </div>
+    <div style="height:60px"></div>`;
+
+    document.getElementById('coForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const f=e.target;
+      if(!f.fn.value.trim()||!f.ln.value.trim()||!f.email.value.trim()){ f.querySelector('input:invalid,[required]')?.focus(); alert('Please fill in your name and email.'); return; }
+      const ord = 'TCU-' + Math.floor(100000 + Math.random()*900000);
+      const name = f.fn.value.trim();
+      window.Cart.clear();
+      main.innerHTML=`<section class="block"><div class="wrap"><div class="empty-state" style="max-width:600px">
+        <span class="ei" style="background:#dcfce7;border-color:#bbf7d0;color:#16a34a">${icon('check','#16a34a').replace('width="24" height="24"','width="32" height="32"')}</span>
+        <h3>Thanks, ${name}! Your order is in.</h3>
+        <p>Order <b>${ord}</b> · total ${fmt(sub)}. A specialist will confirm details and shipping shortly. <br><span style="font-size:13px;color:var(--slate-light)">(Demo confirmation — no real order was placed or charged.)</span></p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a href="index.html" class="btn btn-primary">Continue shopping</a>
+          <a href="tel:8887341283" class="btn btn-light">${icon('phone').replace('width="24" height="24"','width="16" height="16"')} Call us</a>
+        </div>
+      </div></div></section>`;
+      window.scrollTo(0,0);
+    });
+  }
+
+  // qty / remove delegation
+  main.addEventListener('click',e=>{
+    const item=e.target.closest('.cart-item'); if(!item)return;
+    const sku=item.getAttribute('data-sku');
+    const cur=window.Cart.get().find(i=>i.sku===sku); if(!cur)return;
+    if(e.target.closest('[data-inc]')) window.Cart.setQty(sku,cur.qty+1);
+    else if(e.target.closest('[data-dec]')) window.Cart.setQty(sku,cur.qty-1);
+    else if(e.target.closest('[data-remove]')) window.Cart.remove(sku);
+  });
+  window.addEventListener('cartchange',render);
+  render();
+});
+</script>
+</body>
+</html>

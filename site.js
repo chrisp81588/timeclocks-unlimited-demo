@@ -24,7 +24,7 @@ function icon(name, stroke){
 }
 
 const PHONE = '888-734-1283';
-const navItems = (CATEGORIES||[]).map(c=>`<a href="category.html?cat=${c.id}">${c.short||c.name}</a>`).join('');
+const navItems = (CATEGORIES||[]).map(c=>`<a href="category.html?cat=${c.id}">${c.nav||c.short||c.name}</a>`).join('');
 const mmItems = (CATEGORIES||[]).map(c=>`<a class="mm-link" href="category.html?cat=${c.id}">${c.name}</a>`).join('');
 
 function logoMark(size){return `<span class="mark" aria-hidden="true"><svg width="${size||24}" height="${size||24}" viewBox="0 0 24 24" fill="none" stroke="#f26a1b" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>`;}
@@ -43,11 +43,11 @@ const HEADER = `
   </div>
 </div></div>
 <header class="site" id="hdr"><div class="wrap nav">
-  <a class="logo" href="index.html">${logoMark(24)}<span>Time Clocks Unlimited<small>Workforce Management · Est. New England</small></span></a>
+  <a class="logo" href="index.html">${logoMark(24)}<span>Time Clocks Unlimited<small>Workforce Management</small></span></a>
   <nav class="menu" aria-label="Primary">${navItems}<a href="index.html#why">About</a></nav>
   <div class="nav-cta">
-    <button class="icon-btn" aria-label="Search">${icon('search')}</button>
-    <a class="icon-btn" href="#" aria-label="Cart">${icon('cart')}<span class="cart-count" id="cartCount">0</span></a>
+    <button class="icon-btn" id="searchBtn" aria-label="Search">${icon('search')}</button>
+    <a class="icon-btn" href="cart.html" aria-label="Cart">${icon('cart')}<span class="cart-count" id="cartCount">0</span></a>
     <a href="index.html#contact" class="btn btn-primary"><span class="btn-text">Request a Quote</span></a>
     <button class="icon-btn hamburger" id="hamb" aria-label="Open menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </div>
@@ -64,7 +64,15 @@ const HEADER = `
     <a href="index.html#contact" class="btn btn-primary" style="width:100%;justify-content:center">Request a Quote</a>
     <a href="tel:8887341283" class="btn btn-ghost" style="width:100%;justify-content:center;border-color:rgba(255,255,255,.3);color:#fff">${icon('phone')} Call ${PHONE}</a>
   </div>
-</nav>`;
+</nav>
+<div class="search-ov" id="searchOv">
+  <form id="searchForm" role="search">
+    <span style="color:var(--slate-light)">${icon('search')}</span>
+    <input type="search" id="searchInput" placeholder="Search products — e.g. NetBell, DR2000, MJR ribbon…" aria-label="Search products" autocomplete="off" />
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+  <div class="shint">Press Enter to search · Esc to close</div>
+</div>`;
 
 const FOOTER = `
 <footer class="site"><div class="wrap">
@@ -111,15 +119,37 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const cat=new URLSearchParams(location.search).get('cat');
   if(cat){document.querySelectorAll('.menu a').forEach(a=>{if(a.getAttribute('href')==='category.html?cat='+cat)a.classList.add('active');});}
 
-  // cart demo
-  let cart=+(localStorage.getItem('tcuCart')||0);
-  const badge=document.getElementById('cartCount'); if(badge)badge.textContent=cart;
+  // cart (line items)
+  window.Cart = {
+    get(){ try{return JSON.parse(localStorage.getItem('tcuCartV2')||'[]')}catch(e){return[]} },
+    save(c){ localStorage.setItem('tcuCartV2',JSON.stringify(c)); this.updateBadge(); window.dispatchEvent(new Event('cartchange')); },
+    count(){ return this.get().reduce((n,i)=>n+i.qty,0); },
+    add(sku,q){ q=q||1; const c=this.get(); const e=c.find(i=>i.sku===sku); if(e)e.qty+=q; else c.push({sku,qty:q}); this.save(c); },
+    setQty(sku,q){ let c=this.get(); const e=c.find(i=>i.sku===sku); if(e){ e.qty=q; if(e.qty<=0) c=c.filter(i=>i.sku!==sku); } this.save(c); },
+    remove(sku){ this.save(this.get().filter(i=>i.sku!==sku)); },
+    clear(){ this.save([]); },
+    updateBadge(){ const b=document.getElementById('cartCount'); if(b) b.textContent=this.count(); }
+  };
+  window.Cart.updateBadge();
   document.addEventListener('click',ev=>{
     const b=ev.target.closest('[data-add]'); if(!b)return; ev.preventDefault();
-    cart++; localStorage.setItem('tcuCart',cart); if(badge)badge.textContent=cart;
-    const t=b.textContent; b.style.background='#16a34a'; b.innerHTML='Added ✓';
+    const sku=b.getAttribute('data-sku'); if(!sku)return;
+    window.Cart.add(sku,1);
+    const t=b.innerHTML; b.style.background='#16a34a'; b.innerHTML='Added ✓';
     setTimeout(()=>{b.innerHTML=t;b.style.background='';},1100);
   });
+
+  // search overlay
+  const sBtn=document.getElementById('searchBtn'), sOv=document.getElementById('searchOv'),
+        sForm=document.getElementById('searchForm'), sInput=document.getElementById('searchInput');
+  if(sBtn&&sOv){
+    const openS=()=>{sOv.classList.add('open');setTimeout(()=>sInput.focus(),60);document.body.style.overflow='hidden';};
+    const closeS=()=>{sOv.classList.remove('open');document.body.style.overflow='';};
+    sBtn.addEventListener('click',openS);
+    sOv.addEventListener('click',e=>{if(e.target===sOv)closeS();});
+    sForm.addEventListener('submit',e=>{e.preventDefault();const q=sInput.value.trim();if(q)location.href='search.html?q='+encodeURIComponent(q);});
+    addEventListener('keydown',e=>{if(e.key==='Escape'&&sOv.classList.contains('open'))closeS();});
+  }
 
   // reveal
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
