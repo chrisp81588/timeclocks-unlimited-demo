@@ -22,19 +22,7 @@
   const results=q?searchProducts(q):[];
   document.title=(q?`"${q}" — `:'')+'Search — Time Clocks Unlimited';
 
-  function card(p){
-    const cat=getCat(p.cat); const save=(p.list&&p.list>p.price)?p.list-p.price:0;
-    const compat=p.compat&&p.compat.length?`<div class="compat"><b>Fits:</b> ${p.compat.slice(0,2).join(', ')}${p.compat.length>2?' +more':''}</div>`:'';
-    return `<div class="product reveal">
-      <a class="thumb" href="product.html?sku=${encodeURIComponent(p.id)}">${save?`<span class="sale-badge">Save $${save}</span>`:''}<img src="${p.img}" alt="${p.name}" loading="lazy"/></a>
-      <div class="pbody"><span class="cat-tag">${p.brand||p.sub||cat.short}</span>
-        <a href="product.html?sku=${encodeURIComponent(p.id)}"><h4>${p.name}</h4></a>
-        <div class="pmodel">${p.model||''}</div>${compat}
-        <div class="price-row"><span class="price">${fmt(p.price)}</span>${p.list&&p.list>p.price?`<span class="was">${fmt(p.list)}</span>`:''}${save?`<span class="save">Save $${save}</span>`:''}</div>
-      </div>
-      <button class="btn btn-primary padd" data-add data-sku="${p.id}">Add to Cart</button>
-    </div>`;
-  }
+  const card = p => cardHTML(p);
 
   const grid = results.length
     ? `<div class="prod-grid">${results.map(card).join('')}</div>`

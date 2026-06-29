@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <rect width="600" height="600" fill="#f6f8fb"/>
+  <g transform="translate(300 270)" fill="none" stroke="#cbd5e1" stroke-width="10" stroke-linecap="round">
+    <circle r="78"/>
+    <path d="M0 -44 V6 L34 24" stroke="#f26a1b"/>
+  </g>
+  <text x="300" y="408" text-anchor="middle" font-family="'Space Grotesk',Arial,sans-serif" font-size="26" font-weight="700" fill="#94a3b8">Time Clocks Unlimited</text>
+  <text x="300" y="440" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" fill="#b6c2cf">Photo coming soon</text>
+</svg>

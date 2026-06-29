@@ -24,28 +24,7 @@
   if(!cat){ main.innerHTML='<div class="wrap" style="padding:80px 24px"><h1>Category not found</h1><p><a href="index.html">Back to home</a></p></div>'; return; }
   document.title = cat.name + ' — Time Clocks Unlimited';
 
-  function card(p){
-    const save = (p.list && p.list>p.price) ? p.list-p.price : 0;
-    const compat = p.compat && p.compat.length ? `<div class="compat"><b>Fits:</b> ${p.compat.slice(0,2).join(', ')}${p.compat.length>2?' +more':''}</div>` : '';
-    return `<div class="product reveal">
-      <a class="thumb" href="product.html?sku=${encodeURIComponent(p.id)}">
-        ${save?`<span class="sale-badge">Save $${save}</span>`:''}
-        <img src="${p.img}" alt="${p.name}" loading="lazy" />
-      </a>
-      <div class="pbody">
-        <span class="cat-tag">${p.brand||p.sub||cat.short}</span>
-        <a href="product.html?sku=${encodeURIComponent(p.id)}"><h4>${p.name}</h4></a>
-        <div class="pmodel">${p.model||''}</div>
-        ${compat}
-        <div class="price-row">
-          <span class="price">${fmt(p.price)}</span>
-          ${p.list&&p.list>p.price?`<span class="was">${fmt(p.list)}</span>`:''}
-          ${save?`<span class="save">Save $${save}</span>`:''}
-        </div>
-      </div>
-      <button class="btn btn-primary padd" data-add data-sku="${p.id}">Add to Cart ${icon('cart','currentColor').replace('width="24" height="24"','width="16" height="16"')}</button>
-    </div>`;
-  }
+  const card = p => cardHTML(p);
 
   const prods = productsIn(id);
   // group by sub
@@ -97,23 +76,23 @@
     <a href="tel:8887341283" class="btn btn-primary">${icon('phone')} Call 888-734-1283</a>
   </div></section>`;
 
-  // re-run reveal for injected content
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  function observeReveal(){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
+    document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
+  }
+  observeReveal();
 
-  // sort
+  // sort: one continuous flat grid across ALL products for price; grouped sub-categories for "Most Popular"
   const ss=document.getElementById('sortSel');
   if(ss) ss.addEventListener('change', e=>{
-    const v=e.target.value;
-    document.querySelectorAll('.prod-grid').forEach(grid=>{
-      const cards=[...grid.children];
-      cards.sort((a,b)=>{
-        const pa=+a.querySelector('.price').textContent.replace(/[^0-9.]/g,'');
-        const pb=+b.querySelector('.price').textContent.replace(/[^0-9.]/g,'');
-        return v==='low'?pa-pb : v==='high'?pb-pa : 0;
-      });
-      if(v!=='pop') cards.forEach(c=>grid.appendChild(c));
-    });
+    const v=e.target.value, groupsEl=document.getElementById('groups');
+    if(v==='low'||v==='high'){
+      const sorted=[...prods].sort((a,b)=> v==='low' ? a.price-b.price : b.price-a.price);
+      groupsEl.innerHTML=`<section class="block" style="padding:26px 0 10px"><div class="wrap"><div class="prod-grid">${sorted.map(card).join('')}</div></div></section>`;
+    } else {
+      groupsEl.innerHTML=body;
+    }
+    document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
   });
 })();
 </script>

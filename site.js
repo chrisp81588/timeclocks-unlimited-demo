@@ -29,10 +29,34 @@ const mmItems = (CATEGORIES||[]).map(c=>`<a class="mm-link" href="category.html?
 
 function logoMark(size){return `<span class="mark" aria-hidden="true"><svg width="${size||24}" height="${size||24}" viewBox="0 0 24 24" fill="none" stroke="#f26a1b" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>`;}
 
+// shared product-card renderer (keeps every grid consistent)
+const FALLBACK_IMG = "this.onerror=null;this.src='assets/placeholder.svg'";
+window.cardHTML = function(p){
+  const cat = (typeof getCat==='function' ? getCat(p.cat) : null) || {};
+  const save = (p.list && p.list>p.price) ? p.list-p.price : 0;
+  const compat = (p.compat && p.compat.length)
+    ? `<div class="compat"><b>Fits:</b> ${p.compat.slice(0,2).join(', ')}${p.compat.length>2?' +more':''}</div>` : '';
+  return `<div class="product reveal">
+    <a class="thumb" href="product.html?sku=${encodeURIComponent(p.id)}">
+      ${save?`<span class="sale-badge">Save $${save}</span>`:''}
+      <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="${FALLBACK_IMG}"/>
+    </a>
+    <div class="pbody">
+      <span class="cat-tag">${p.brand||p.sub||cat.short||''}</span>
+      <a href="product.html?sku=${encodeURIComponent(p.id)}"><h4>${p.name}</h4></a>
+      <div class="pmodel">${p.model||''}</div>
+      ${compat}
+      <div class="price-row"><span class="price">${fmt(p.price)}</span>${p.list&&p.list>p.price?`<span class="was">${fmt(p.list)}</span>`:''}</div>
+      <div class="stock"><span class="sdot"></span> In stock · ships 1–2 days</div>
+    </div>
+    <button class="btn btn-primary padd" data-add data-sku="${p.id}">Add to Cart <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H3"/></svg></button>
+  </div>`;
+};
+
 const HEADER = `
 <div class="utility"><div class="wrap">
   <div class="u-left">
-    <span class="u-badge"><span class="dot"></span> New England's #1 TimeForce Dealer</span>
+    <span class="u-badge"><span class="dot"></span> Authorized dealer · Amano · TimeForce · Linortek &amp; more</span>
     <span class="hide-sm" style="color:#cbd5e1">Free shipping on orders $99+</span>
   </div>
   <div class="u-right">

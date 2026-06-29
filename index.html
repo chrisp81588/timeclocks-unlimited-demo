@@ -29,7 +29,7 @@
   .hero::after{content:"";position:absolute;width:520px;height:520px;right:-120px;top:-120px;background:radial-gradient(circle,rgba(242,106,27,.35),transparent 65%);filter:blur(20px)}
   .hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:64px 24px 78px}
   .hero h1{font-size:clamp(32px,4.4vw,54px);margin:18px 0 0}
-  .hero h1 .hl{color:var(--orange);white-space:nowrap}
+  .hero h1 .hl{color:var(--amber);white-space:nowrap}
   .hero p.lead{font-size:clamp(16px,1.6vw,19px);color:#cdd9e6;max-width:560px;margin:22px 0 30px}
   .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
   .trust-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
@@ -99,7 +99,7 @@
     <div>
       <span class="eyebrow">Time &amp; Attendance · Break Bells · Biometrics</span>
       <h1>Run your workforce on <span class="hl">time</span>, down to the second.</h1>
-      <p class="lead">From the first door swipe to the final punch-out, Time Clocks Unlimited equips New England businesses with the time clocks, software, and break-bell systems that keep payroll accurate and crews on schedule — backed by personal service direct from the owner.</p>
+      <p class="lead">Time clocks · break bells &amp; buzzers · IP paging · biometric clocks · date stamps · ribbons &amp; supplies. New England's one-stop shop to keep payroll accurate and your floor on schedule — shipped fast, with service direct from the owner.</p>
       <div class="hero-cta">
         <a href="category.html?cat=software" class="btn btn-primary">Shop Time Clocks <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a href="#contact" class="btn btn-ghost">Talk to a Specialist</a>
@@ -136,7 +136,7 @@
 <!-- Metrics -->
 <div class="metrics"><div class="wrap">
   <div class="metric reveal"><b>#1</b><span>TimeForce dealer in New England</span></div>
-  <div class="metric reveal"><b>50<span class="u">+</span></b><span>Products in stock &amp; shipping</span></div>
+  <div class="metric reveal"><b>60<span class="u">+</span></b><span>Products in stock &amp; shipping</span></div>
   <div class="metric reveal"><b><span class="u">$</span>99+</b><span>Free shipping threshold</span></div>
   <div class="metric reveal"><b>100<span class="u">%</span></b><span>Owner-direct support line</span></div>
 </div></div>
@@ -206,18 +206,7 @@
 
   // featured products (curated mix)
   const FEAT=['01-910-00025','DR2000','V850','_01-910-00005','MJR-7000-1167','776','01-910-00137','AR175'];
-  document.getElementById('featGrid').innerHTML = FEAT.map(id=>getProduct(id)).filter(Boolean).map(p=>{
-    const save=(p.list&&p.list>p.price)?p.list-p.price:0;
-    return `<div class="product reveal">
-      <a class="thumb" href="product.html?sku=${encodeURIComponent(p.id)}">${save?`<span class="sale-badge">Save $${save}</span>`:''}<img src="${p.img}" alt="${p.name}" loading="lazy"/></a>
-      <div class="pbody"><span class="cat-tag">${p.brand||''}</span>
-        <a href="product.html?sku=${encodeURIComponent(p.id)}"><h4>${p.name}</h4></a>
-        <div class="pmodel">${p.model||''}</div>
-        <div class="price-row"><span class="price">${fmt(p.price)}</span>${p.list&&p.list>p.price?`<span class="was">${fmt(p.list)}</span>`:''}${save?`<span class="save">Save $${save}</span>`:''}</div>
-      </div>
-      <button class="btn btn-primary padd" data-add data-sku="${p.id}">Add to Cart</button>
-    </div>`;
-  }).join('');
+  document.getElementById('featGrid').innerHTML = FEAT.map(id=>getProduct(id)).filter(Boolean).map(cardHTML).join('');
 
   // reveal for injected
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
