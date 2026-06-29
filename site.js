@@ -82,6 +82,7 @@ const HEADER = `
     <a class="logo" href="index.html" style="font-size:18px">${logoMark(20)}<span style="color:#fff">Time Clocks Unlimited</span></a>
     <button class="icon-btn" id="mmClose" aria-label="Close menu" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#fff"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   </div>
+  <a class="mm-link" id="mmSearch" href="#" style="color:var(--amber)">Search products ${icon('search').replace('width="24" height="24"','width="18" height="18"')}</a>
   ${mmItems}
   <a class="mm-link" href="index.html#why">About Us</a>
   <div class="mm-cta">
@@ -172,6 +173,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const openS=()=>{sOv.classList.add('open');setTimeout(()=>sInput.focus(),60);document.body.style.overflow='hidden';};
     const closeS=()=>{sOv.classList.remove('open');document.body.style.overflow='';};
     sBtn.addEventListener('click',openS);
+    const mmS=document.getElementById('mmSearch');
+    if(mmS) mmS.addEventListener('click',e=>{e.preventDefault();setTimeout(openS,340);}); // menu auto-closes; open search after
     sOv.addEventListener('click',e=>{if(e.target===sOv)closeS();});
     sForm.addEventListener('submit',e=>{e.preventDefault();const q=sInput.value.trim();if(q)location.href='search.html?q='+encodeURIComponent(q);});
     addEventListener('keydown',e=>{if(e.key==='Escape'&&sOv.classList.contains('open'))closeS();});
