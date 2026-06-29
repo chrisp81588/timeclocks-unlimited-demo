@@ -27,6 +27,7 @@
   const card = p => cardHTML(p);
 
   const prods = productsIn(id);
+  const brands = [...new Set(prods.map(p=>p.brand).filter(Boolean))].sort();
   // group by sub
   const groups = {};
   prods.forEach(p=>{ const k=p.sub||'__all'; (groups[k]=groups[k]||[]).push(p); });
@@ -56,12 +57,12 @@
   </div></div>
   ${benefitBlock}
   ${prods.length ? `<div class="wrap"><div class="toolbar" style="margin-top:30px">
-    <span class="count">${prods.length} products</span>
-    <select id="sortSel" aria-label="Sort">
-      <option value="pop">Most Popular</option>
-      <option value="low">Price: Low to High</option>
-      <option value="high">Price: High to Low</option>
-    </select>
+    <span class="count" id="resultCount">${prods.length} products</span>
+    <div class="filters">
+      ${brands.length>1?`<select id="brandSel" aria-label="Filter by brand"><option value="">All brands</option>${brands.map(b=>`<option value="${b}">${b}</option>`).join('')}</select>`:''}
+      <select id="priceSel" aria-label="Filter by price"><option value="">Any price</option><option value="u100">Under $100</option><option value="100-500">$100 – $500</option><option value="500-1000">$500 – $1,000</option><option value="1000">$1,000 +</option></select>
+      <select id="sortSel" aria-label="Sort"><option value="pop">Most Popular</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option></select>
+    </div>
   </div></div>
   <div id="groups">${body}</div>` : `<section class="block"><div class="wrap"><div class="empty-state">
     <span class="ei">${icon(cat.icon||'phone','currentColor').replace('width="24" height="24"','width="30" height="30"')}</span>
@@ -82,18 +83,24 @@
   }
   observeReveal();
 
-  // sort: one continuous flat grid across ALL products for price; grouped sub-categories for "Most Popular"
-  const ss=document.getElementById('sortSel');
-  if(ss) ss.addEventListener('change', e=>{
-    const v=e.target.value, groupsEl=document.getElementById('groups');
-    if(v==='low'||v==='high'){
-      const sorted=[...prods].sort((a,b)=> v==='low' ? a.price-b.price : b.price-a.price);
-      groupsEl.innerHTML=`<section class="block" style="padding:26px 0 10px"><div class="wrap"><div class="prod-grid">${sorted.map(card).join('')}</div></div></section>`;
-    } else {
-      groupsEl.innerHTML=body;
-    }
+  // filters + sort. Grouped sub-category view only when no filter AND sort = Most Popular; otherwise a flat filtered/sorted grid.
+  const brandSel=document.getElementById('brandSel'), priceSel=document.getElementById('priceSel'), sortSel=document.getElementById('sortSel'),
+        groupsEl=document.getElementById('groups'), countEl=document.getElementById('resultCount');
+  function inPrice(pr,v){ return v==='u100'?pr<100 : v==='100-500'?(pr>=100&&pr<500) : v==='500-1000'?(pr>=500&&pr<1000) : v==='1000'?pr>=1000 : true; }
+  function applyView(){
+    if(!sortSel) return;
+    const bv=brandSel?brandSel.value:'', pv=priceSel.value, sv=sortSel.value;
+    let list=prods.filter(p=>(!bv||p.brand===bv)&&inPrice(p.price,pv));
+    if(sv==='low') list.sort((a,b)=>a.price-b.price); else if(sv==='high') list.sort((a,b)=>b.price-a.price);
+    if(countEl) countEl.textContent = list.length+' product'+(list.length===1?'':'s');
+    const filtered = bv||pv;
+    if(!filtered && sv==='pop'){ groupsEl.innerHTML=body; }
+    else if(!list.length){ groupsEl.innerHTML=`<section class="block"><div class="wrap"><div class="empty-state"><span class="ei">${icon('search','currentColor').replace('width="24" height="24"','width="28" height="28"')}</span><h3>No products match those filters</h3><p>Try widening your price range or brand.</p><button class="btn btn-light" id="clearF">Clear filters</button></div></div></section>`;
+      const cf=document.getElementById('clearF'); if(cf) cf.onclick=()=>{ if(brandSel)brandSel.value=''; priceSel.value=''; sortSel.value='pop'; applyView(); }; }
+    else { groupsEl.innerHTML=`<section class="block" style="padding:26px 0 10px"><div class="wrap"><div class="prod-grid">${list.map(card).join('')}</div></div></section>`; }
     document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
-  });
+  }
+  [brandSel,priceSel,sortSel].forEach(s=>{ if(s) s.addEventListener('change', applyView); });
 })();
 </script>
 </body>

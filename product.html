@@ -29,12 +29,16 @@
   const bullets = (p.bullets||[]).map(b=>`<li>${icon('check','#16a34a').replace('width="24" height="24"','width="18" height="18"')}<span>${b}</span></li>`).join('');
   const specs = p.specs ? `<div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div class="row"><div class="k">${k}</div><div>${v}</div></div>`).join('')}</div>` : '';
   const compat = (p.compat&&p.compat.length) ? `<div class="compat-box"><h4>${icon('check','#f26a1b').replace('width="24" height="24"','width="16" height="16"')} Compatible with</h4><ul>${p.compat.map(c=>`<li>${c}</li>`).join('')}</ul></div>` : '';
+  const specChips = p.specs ? `<div class="spec-chips">${Object.entries(p.specs).slice(0,4).map(([k,v])=>`<span class="sc">${k}: ${v}</span>`).join('')}</div>` : '';
 
   main.innerHTML = `
   <div class="wrap">
     <div class="crumb"><a href="index.html">Home</a> › <a href="category.html?cat=${cat.id}">${cat.name}</a> › <span>${p.name}</span></div>
     <div class="detail">
-      <div class="gallery reveal"><img src="${p.img}" alt="${p.name}" /></div>
+      <div class="gallery-col reveal">
+        <div class="gallery" id="gallery" title="Click to zoom"><img src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='assets/placeholder.svg'" /><span class="zoom-hint">${icon('search').replace('width="24" height="24"','width="15" height="15"')} Click to zoom</span></div>
+        ${specChips}
+      </div>
       <div class="info reveal">
         <span class="cat-tag">${p.brand||cat.short}${p.model? ' · '+p.model : ''}</span>
         <h1>${p.name}</h1>
@@ -81,6 +85,17 @@
     b.style.background='#16a34a'; b.innerHTML='Added '+qty+' to cart ✓';
     setTimeout(()=>{b.innerHTML=t;b.style.background='';},1300);
   };
+
+  // click-to-zoom lightbox
+  const g=document.getElementById('gallery');
+  if(g) g.addEventListener('click',()=>{
+    const ov=document.createElement('div'); ov.className='lightbox';
+    ov.innerHTML=`<img src="${p.img}" alt="${p.name}"/>`;
+    const close=()=>{ov.remove();document.removeEventListener('keydown',onKey);};
+    function onKey(e){ if(e.key==='Escape') close(); }
+    ov.addEventListener('click',close); document.addEventListener('keydown',onKey);
+    document.body.appendChild(ov);
+  });
 
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
