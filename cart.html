@@ -18,7 +18,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', function(){
   const main=document.getElementById('main');
-  const FREE=99;
 
   function lineItems(){ return window.Cart.get().map(i=>({...i, p:getProduct(i.sku)})).filter(x=>x.p); }
   function subtotal(items){ return items.reduce((s,x)=>s+x.p.price*x.qty,0); }
@@ -35,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function(){
       return;
     }
     const sub=subtotal(items), count=items.reduce((n,x)=>n+x.qty,0);
-    const free = sub>=FREE;
     const rows=items.map(x=>`
       <div class="cart-item" data-sku="${x.p.id}">
         <div class="ci-img"><img src="${x.p.img}" alt="${x.p.name}"/></div>
@@ -61,9 +59,8 @@ document.addEventListener('DOMContentLoaded', function(){
         </div>
         <div class="summary">
           <h3>Order Summary</h3>
-          <div class="freebar">${free?'✓ Your order qualifies for <b>free shipping</b>.':`Add <b>${fmt(FREE-sub)}</b> more to qualify for free shipping.`}</div>
           <div class="ln"><span>Subtotal</span><span>${fmt(sub)}</span></div>
-          <div class="ln"><span>Shipping</span><span>${free?'Free':'Calculated at checkout'}</span></div>
+          <div class="ln"><span>Shipping</span><span>Calculated at checkout (UPS)</span></div>
           <div class="ln total"><span>Total</span><span>${fmt(sub)}</span></div>
           <form class="checkout-form" id="coForm" novalidate>
             <div><label>First name</label><input name="fn" required></div>
