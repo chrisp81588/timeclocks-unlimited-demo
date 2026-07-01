@@ -113,7 +113,7 @@ const FOOTER = `
     <div><h5>Categories</h5><ul>${(CATEGORIES||[]).map(c=>`<li><a href="category.html?cat=${c.id}">${c.name}</a></li>`).join('')}</ul></div>
     <div><h5>Company</h5><ul>
       <li><a href="index.html#why">About Us</a></li><li><a href="index.html#contact">Contact Us</a></li>
-      <li><a href="#">Shipping &amp; Deliveries</a></li><li><a href="#">Returns &amp; Exchanges</a></li><li><a href="#">Site Help / FAQ</a></li>
+      <li><a href="shipping.html">Shipping &amp; Deliveries</a></li><li><a href="returns.html">Returns &amp; Exchanges</a></li><li><a href="faq.html">Site Help / FAQ</a></li>
     </ul></div>
     <div><h5>Contact</h5><div class="foot-contact">
       <span>${icon('pin')} 383 Gardiner Road<br>West Kingston, RI 02892</span>
