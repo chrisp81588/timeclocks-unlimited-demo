@@ -1,4 +1,33 @@
 /* Time Clocks Unlimited — shared chrome (header, nav, footer, mobile menu) + interactions */
+const BASE_URL = 'https://chrisp81588.github.io/timeclocks-unlimited-demo/';
+
+// Per-page SEO tag helper — sets title/description/canonical/OG for dynamically-rendered pages
+function setSEO({title, description, path, image, jsonLd}){
+  document.title = title;
+  const setMeta = (sel, attr, content) => {
+    let el = document.head.querySelector(sel);
+    if(!el){ el = document.createElement('meta'); document.head.appendChild(el); }
+    if(attr === 'name') el.setAttribute('name', sel.match(/\[name="([^"]+)"\]/)[1]);
+    else el.setAttribute('property', sel.match(/\[property="([^"]+)"\]/)[1]);
+    el.setAttribute('content', content);
+  };
+  setMeta('meta[name="description"]', 'name', description);
+  setMeta('meta[property="og:title"]', 'property', title);
+  setMeta('meta[property="og:description"]', 'property', description);
+  const url = BASE_URL + path;
+  setMeta('meta[property="og:url"]', 'property', url);
+  setMeta('meta[property="og:image"]', 'property', image || (BASE_URL + 'og-image.png'));
+  let canon = document.head.querySelector('link[rel="canonical"]');
+  if(!canon){ canon = document.createElement('link'); canon.setAttribute('rel','canonical'); document.head.appendChild(canon); }
+  canon.setAttribute('href', url);
+  (Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []).forEach(obj=>{
+    const ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify(obj);
+    document.head.appendChild(ld);
+  });
+}
+
 function icon(name, stroke){
   const s = stroke || 'currentColor';
   const I = {

@@ -6,6 +6,10 @@
 <title>Site Help / FAQ — Time Clocks Unlimited</title>
 <meta name="description" content="Frequently asked questions for Time Clocks Unlimited, LLC — orders, accounts, shipping, returns, and billing." />
 <meta name="theme-color" content="#0a1c2e" />
+<link rel="canonical" href="https://chrisp81588.github.io/timeclocks-unlimited-demo/faq.html" />
+<meta property="og:type" content="website" /><meta property="og:site_name" content="Time Clocks Unlimited, LLC" />
+<meta property="og:title" content="Site Help / FAQ — Time Clocks Unlimited" /><meta property="og:description" content="Answers on orders, shipping, returns, accounts and billing." />
+<meta property="og:url" content="https://chrisp81588.github.io/timeclocks-unlimited-demo/faq.html" /><meta property="og:image" content="https://chrisp81588.github.io/timeclocks-unlimited-demo/og-image.png" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230a1c2e'/%3E%3Cg fill='none' stroke='%23f26a1b' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='7'/%3E%3Cpath d='M12 8v4l3 1.6'/%3E%3C/g%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -94,5 +98,19 @@
 </main>
 <script src="catalog.js"></script>
 <script src="site.js"></script>
+<script>
+(function(){
+  // FAQPage structured data — built from the on-page Q&A so there's one source of truth
+  const items = Array.from(document.querySelectorAll('.faq-item')).map(el=>({
+    "@type": "Question",
+    "name": el.querySelector('summary').textContent.trim(),
+    "acceptedAnswer": { "@type": "Answer", "text": el.querySelector('.faq-a').textContent.trim() }
+  }));
+  const ld = document.createElement('script');
+  ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": items });
+  document.head.appendChild(ld);
+})();
+</script>
 </body>
 </html>

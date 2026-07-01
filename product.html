@@ -23,7 +23,33 @@
   const main = document.getElementById('main');
   if(!p){ main.innerHTML='<div class="wrap" style="padding:80px 24px"><h1>Product not found</h1><p><a href="index.html">Back to home</a></p></div>'; return; }
   const cat = getCat(p.cat);
-  document.title = p.name + ' — Time Clocks Unlimited';
+  const absImg = BASE_URL + p.img;
+  setSEO({
+    title: p.name + ' — Time Clocks Unlimited',
+    description: (p.short || p.desc || p.name) + (p.brand ? ' Authorized ' + p.brand + ' dealer.' : ''),
+    path: 'product.html?sku=' + encodeURIComponent(p.id),
+    image: absImg,
+    jsonLd: [
+      {
+        "@context": "https://schema.org", "@type": "Product",
+        "name": p.name, "image": absImg, "description": p.short || p.desc || p.name,
+        "sku": p.id, "brand": { "@type": "Brand", "name": p.brand || "Time Clocks Unlimited" },
+        "offers": {
+          "@type": "Offer", "url": BASE_URL + 'product.html?sku=' + encodeURIComponent(p.id),
+          "priceCurrency": "USD", "price": p.price, "availability": "https://schema.org/InStock",
+          "seller": { "@type": "Organization", "name": "Time Clocks Unlimited, LLC" }
+        }
+      },
+      {
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type":"ListItem","position":1,"name":"Home","item":BASE_URL},
+          {"@type":"ListItem","position":2,"name":cat.name,"item":BASE_URL+'category.html?cat='+cat.id},
+          {"@type":"ListItem","position":3,"name":p.name,"item":BASE_URL+'product.html?sku='+encodeURIComponent(p.id)}
+        ]
+      }
+    ]
+  });
 
   const save = (p.list && p.list>p.price) ? p.list-p.price : 0;
   const bullets = (p.bullets||[]).map(b=>`<li>${icon('check','#16a34a').replace('width="24" height="24"','width="18" height="18"')}<span>${b}</span></li>`).join('');

@@ -22,7 +22,18 @@
   const cat = getCat(id);
   const main = document.getElementById('main');
   if(!cat){ main.innerHTML='<div class="wrap" style="padding:80px 24px"><h1>Category not found</h1><p><a href="index.html">Back to home</a></p></div>'; return; }
-  document.title = cat.name + ' — Time Clocks Unlimited';
+  setSEO({
+    title: cat.name + ' — Time Clocks Unlimited',
+    description: cat.blurb || (cat.tagline + '. Shop ' + cat.short.toLowerCase() + ' from Time Clocks Unlimited, LLC.'),
+    path: 'category.html?cat=' + cat.id,
+    jsonLd: {
+      "@context": "https://schema.org", "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type":"ListItem","position":1,"name":"Home","item":BASE_URL},
+        {"@type":"ListItem","position":2,"name":cat.name,"item":BASE_URL+'category.html?cat='+cat.id}
+      ]
+    }
+  });
 
   const card = p => cardHTML(p);
 
