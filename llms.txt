@@ -1,0 +1,32 @@
+# Time Clocks Unlimited, LLC
+
+> New England's largest TimeForce dealer — time clocks, time & attendance software,
+> break bell & buzzer systems, IP paging, biometric clocks, date stamps, and genuine
+> ribbons, time cards & supplies. Family-run, with service direct from the owner.
+
+- Phone: 888-734-1283
+- Email: info@timeclocksunltd.com
+- Address: 383 Gardiner Road, West Kingston, RI 02892, USA
+- Ships: United States and Canada, via UPS (rates calculated at checkout)
+- Authorized dealer for: Linortek (NetBell), Amano, Widmer, uAttend, Qqest (TimeForce/Velocity)
+- We service what we sell. Call the owner directly with any product question.
+
+## Shop by category
+
+- [NetBell IP Public Address](https://chrisp81588.github.io/timeclocks-unlimited-demo/category.html?cat=netbell-pa): Facility-wide IP paging & PA over your existing network — warehouses, factories, schools. Systems from $2,566 (base includes 2 speakers; additional speakers +$394 each, up to 6).
+- [Break Bells & Buzzers](https://chrisp81588.github.io/timeclocks-unlimited-demo/category.html?cat=break-bells): Web-based (TCP/IP) NetBell systems scheduled from a browser, and classic wired timer-switch bell/buzzer assemblies.
+- [Time & Attendance / Biometric Clocks](https://chrisp81588.github.io/timeclocks-unlimited-demo/category.html?cat=software): Facial-recognition and fingerprint terminals, uAttend cloud clocks, Qqest TimeForce 2 systems.
+- [Amano Time Clocks](https://chrisp81588.github.io/timeclocks-unlimited-demo/category.html?cat=time-clocks): Amano electronic and punch-card time recorders (CP-5000, MJR series, PIX-200).
+- [Date & Numbering Stamps](https://chrisp81588.github.io/timeclocks-unlimited-demo/category.html?cat=date-stamps): Widmer date stamps, time stamps and document-control machines (T-3, 776 dual-head).
+- [Ribbons, Cards & Supplies](https://chrisp81588.github.io/timeclocks-unlimited-demo/category.html?cat=ribbons): Genuine replacement ribbons and time cards for Amano and Widmer clocks.
+- [Wireless Break Systems](https://chrisp81588.github.io/timeclocks-unlimited-demo/category.html?cat=wireless): Wireless break-bell and paging systems — call for a configured quote.
+
+## Policies
+
+- [Shipping & Deliveries](https://chrisp81588.github.io/timeclocks-unlimited-demo/shipping.html): UPS (Ground, 2nd Day Air, Next Day Air Saver, Next Day Air); most in-stock items ship in 1–2 business days; US & Canada.
+- [Returns & Exchanges](https://chrisp81588.github.io/timeclocks-unlimited-demo/returns.html): 7 calendar days from delivery, new/unused condition, original receipt required; 15% restocking fee on non-exchange returns; contact us before returning.
+- [Site Help / FAQ](https://chrisp81588.github.io/timeclocks-unlimited-demo/faq.html): Orders, accounts, shipping, billing and support questions.
+
+## Note
+
+This is a redesign demonstration site for Time Clocks Unlimited, LLC (timeclocksunltd.com).
