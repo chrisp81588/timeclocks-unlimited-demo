@@ -40,6 +40,11 @@ svg{flex:none}
 .u-badge{display:inline-flex;align-items:center;gap:7px;color:#fff;font-weight:600}
 .u-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,.25)}
 .u-phone{color:#fff;font-weight:600}
+/* utility items always stay on a single line (no mid-text wrapping) */
+.u-badge,.u-phone,.utility .u-right a,.utility .u-left .hide-sm{white-space:nowrap}
+/* drop the least-critical items as the window narrows so the bar never wraps to 2 lines */
+@media(max-width:1300px){ .utility .u-left .hide-sm{display:none} }          /* hide shipping tagline */
+@media(max-width:1040px){ .utility .u-right a[href^="mailto"]{display:none} } /* then hide the email */
 
 /* header */
 header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);transition:box-shadow .25s}
@@ -50,14 +55,15 @@ header.site.scrolled{box-shadow:0 8px 30px -18px rgba(10,28,46,.35)}
 .logo>span:last-child{white-space:nowrap;display:inline-block}
 .logo small{display:block;font-family:'Inter';font-size:10px;font-weight:500;letter-spacing:.05em;color:var(--slate-light);text-transform:uppercase;white-space:nowrap}
 .menu{display:flex;align-items:center;gap:0;flex-wrap:nowrap}
-.menu a{font-size:12.5px;font-weight:600;color:var(--ink-2);padding:8px 8px;border-radius:9px;transition:background .15s,color .15s;line-height:1.15;white-space:nowrap}
+.menu a{font-size:12px;font-weight:600;color:var(--ink-2);padding:7px 6px;border-radius:9px;transition:background .15s,color .15s;line-height:1.15;white-space:nowrap}
 .menu a:hover,.menu a.active{background:var(--bg);color:var(--orange-dark)}
-.nav-cta{display:flex;align-items:center;gap:10px}
+.nav-cta{display:flex;align-items:center;gap:9px}
+.nav-cta .btn{padding:9px 16px;font-size:13.5px}
 .icon-btn{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--ink-2);transition:.15s;position:relative}
 .icon-btn:hover{border-color:var(--orange);color:var(--orange)}
 .cart-count{position:absolute;top:-6px;right:-6px;background:var(--orange);color:#fff;font-size:11px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center;padding:0 4px}
 .hamburger{display:none}
-@media(max-width:1180px){.menu{display:none}.hamburger{display:grid}.nav-cta>.btn-primary{display:none}}
+@media(max-width:1200px){.menu{display:none}.hamburger{display:grid}.nav-cta>.btn-primary{display:none}}
 
 /* mobile menu */
 .mm-overlay{position:fixed;inset:0;background:rgba(5,12,22,.5);z-index:65;opacity:0;transition:opacity .3s;backdrop-filter:blur(2px)}
