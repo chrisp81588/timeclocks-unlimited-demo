@@ -75,7 +75,7 @@ window.cardHTML = function(p){
       <a href="product.html?sku=${encodeURIComponent(p.id)}"><h4>${p.name}</h4></a>
       <div class="pmodel">${p.model||''}</div>
       ${compat}
-      <div class="price-row"><span class="price">${fmt(p.price)}</span>${p.list&&p.list>p.price?`<span class="was">${fmt(p.list)}</span>`:''}</div>
+      <div class="price-row">${p.options?'<span class="from">From</span> ':''}<span class="price">${fmt(p.price)}</span>${p.list&&p.list>p.price?`<span class="was">${fmt(p.list)}</span>`:''}</div>
       <div class="stock"><span class="sdot"></span> In stock · ships 1–2 days</div>
     </div>
     <button class="btn btn-primary padd" data-add data-sku="${p.id}">Add to Cart <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H3"/></svg></button>
@@ -173,14 +173,17 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const cat=new URLSearchParams(location.search).get('cat');
   if(cat){document.querySelectorAll('.menu a').forEach(a=>{if(a.getAttribute('href')==='category.html?cat='+cat)a.classList.add('active');});}
 
-  // cart (line items)
+  // cart (line items). A line = {sku, qty, opt} where opt = {label, add} (or null).
+  // Same product with different options = separate lines, keyed by lineId.
   window.Cart = {
     get(){ try{return JSON.parse(localStorage.getItem('tcuCartV2')||'[]')}catch(e){return[]} },
     save(c){ localStorage.setItem('tcuCartV2',JSON.stringify(c)); this.updateBadge(); window.dispatchEvent(new Event('cartchange')); },
     count(){ return this.get().reduce((n,i)=>n+i.qty,0); },
-    add(sku,q){ q=q||1; const c=this.get(); const e=c.find(i=>i.sku===sku); if(e)e.qty+=q; else c.push({sku,qty:q}); this.save(c); },
-    setQty(sku,q){ let c=this.get(); const e=c.find(i=>i.sku===sku); if(e){ e.qty=q; if(e.qty<=0) c=c.filter(i=>i.sku!==sku); } this.save(c); },
-    remove(sku){ this.save(this.get().filter(i=>i.sku!==sku)); },
+    lineId(i){ return i.sku + '::' + (i.opt&&i.opt.label ? i.opt.label : ''); },
+    unitPrice(i){ const p=(typeof getProduct==='function')?getProduct(i.sku):null; if(!p) return 0; return p.price + (i.opt&&i.opt.add ? i.opt.add : 0); },
+    add(sku,q,opt){ q=q||1; const c=this.get(); const lid=sku+'::'+(opt&&opt.label?opt.label:''); const e=c.find(i=>this.lineId(i)===lid); if(e)e.qty+=q; else c.push({sku,qty:q,opt:opt||null}); this.save(c); },
+    setQty(lid,q){ let c=this.get(); const e=c.find(i=>this.lineId(i)===lid); if(e){ e.qty=q; if(e.qty<=0) c=c.filter(i=>this.lineId(i)!==lid); } this.save(c); },
+    remove(lid){ this.save(this.get().filter(i=>this.lineId(i)!==lid)); },
     clear(){ this.save([]); },
     updateBadge(){ const b=document.getElementById('cartCount'); if(b) b.textContent=this.count(); }
   };
@@ -190,7 +193,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
   document.addEventListener('click',ev=>{
     const b=ev.target.closest('[data-add]'); if(!b)return; ev.preventDefault();
     const sku=b.getAttribute('data-sku'); if(!sku)return;
-    window.Cart.add(sku,1);
+    const p=(typeof getProduct==='function')?getProduct(sku):null;
+    const opt=(p&&p.options)?p.options.choices[0]:null; // configurable products add the base config
+    window.Cart.add(sku,1,opt);
     const t=b.innerHTML; b.style.background='#16a34a'; b.innerHTML='Added ✓';
     setTimeout(()=>{b.innerHTML=t;b.style.background='';},1100);
   });

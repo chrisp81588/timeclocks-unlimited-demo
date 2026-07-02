@@ -176,6 +176,7 @@ section.block{padding:78px 0}
 .stock{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#15803d;margin-top:2px}
 .stock .sdot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,.18)}
 .price-row{display:flex;align-items:baseline;gap:9px;margin-top:auto;padding-top:6px}
+.price-row .from{font-size:11.5px;font-weight:600;color:var(--slate-light);text-transform:uppercase;letter-spacing:.03em;margin-right:-4px}
 .price{font-family:'Space Grotesk';font-weight:700;font-size:20px;color:var(--ink)}
 .was{font-size:13px;color:var(--slate-light);text-decoration:line-through}
 .save{font-size:11.5px;font-weight:600;color:var(--green)}
@@ -235,6 +236,11 @@ section.block{padding:78px 0}
 .qtyrow{display:flex;align-items:center;gap:14px 16px;margin:18px 0 2px;flex-wrap:wrap}
 .qtyrow .qlbl{font-size:14px;font-weight:600;color:var(--ink)}
 .qtyrow .qty{margin-top:0}
+/* product option selector (e.g. Number of Speakers) */
+.optrow{display:flex;flex-direction:column;gap:7px;margin:16px 0 4px;max-width:320px}
+.optrow .qlbl{font-size:14px;font-weight:600;color:var(--ink)}
+.opt-select{font-family:inherit;font-size:15px;font-weight:500;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer;width:100%}
+.opt-select:focus{outline:2px solid var(--orange);outline-offset:1px;border-color:var(--orange)}
 .detail .gallery{cursor:zoom-in}
 .detail .gallery:hover img{transform:scale(1.08)}
 .spec-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;justify-content:center}
@@ -294,6 +300,8 @@ section.block{padding:78px 0}
 .cart-item .ci-name{font-weight:600;font-size:15px}
 .cart-item .ci-name a:hover{color:var(--orange-dark)}
 .cart-item .ci-model{font-size:12.5px;color:var(--slate-light)}
+.cart-item .ci-opt{font-size:12.5px;color:var(--slate);margin:3px 0 1px}
+.cart-item .ci-opt b{color:var(--ink);font-weight:600}
 .cart-item .ci-price{font-family:'Space Grotesk';font-weight:700;margin-top:6px}
 .qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-top:8px}
 .qty button{width:30px;height:30px;border:0;background:#fff;cursor:pointer;font-size:16px;color:var(--ink)}

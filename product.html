@@ -56,6 +56,12 @@
   const specs = p.specs ? `<div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div class="row"><div class="k">${k}</div><div>${v}</div></div>`).join('')}</div>` : '';
   const compat = (p.compat&&p.compat.length) ? `<div class="compat-box"><h4>${icon('check','#f26a1b').replace('width="24" height="24"','width="16" height="16"')} Compatible with</h4><ul>${p.compat.map(c=>`<li>${c}</li>`).join('')}</ul></div>` : '';
   const specChips = p.specs ? `<div class="spec-chips">${Object.entries(p.specs).slice(0,4).map(([k,v])=>`<span class="sc">${k}: ${v}</span>`).join('')}</div>` : '';
+  const optBlock = p.options ? `<div class="optrow">
+    <label class="qlbl" for="optSel">${p.options.label}</label>
+    <select id="optSel" class="opt-select" aria-label="${p.options.label}">
+      ${p.options.choices.map((c,i)=>`<option value="${i}">${c.label}${c.add?' (+$'+c.add.toLocaleString('en-US')+')':''}</option>`).join('')}
+    </select>
+  </div>` : '';
 
   main.innerHTML = `
   <div class="wrap">
@@ -69,10 +75,11 @@
         <span class="cat-tag">${p.brand||cat.short}${p.model? ' · '+p.model : ''}</span>
         <h1>${p.name}</h1>
         <div class="pricebox">
-          <span class="price">${fmt(p.price)}</span>
+          <span class="price" id="pdpPrice">${fmt(p.price)}</span>
           ${p.list&&p.list>p.price?`<span class="was">${fmt(p.list)}</span>`:''}
           ${save?`<span class="save">You save $${save}</span>`:''}
         </div>
+        ${optBlock}
         <p class="desc">${p.short||''}</p>
         ${bullets?`<ul class="bul">${bullets}</ul>`:''}
         <div class="qtyrow"><span class="qlbl">Qty</span><div class="qty"><button type="button" id="qtyDec" aria-label="Decrease quantity">−</button><span id="qtyVal">1</span><button type="button" id="qtyInc" aria-label="Increase quantity">+</button></div><span class="stock" style="margin-top:0"><span class="sdot"></span> In stock · ships 1–2 business days</span></div>
@@ -101,12 +108,23 @@
   const rel = productsIn(p.cat).filter(x=>x.id!==p.id).slice(0,4);
   document.getElementById('related').innerHTML = rel.map(cardHTML).join('');
 
-  // quantity stepper + qty-aware add to cart
+  // option selector (e.g. Number of Speakers) — live-updates the displayed price
+  let optIdx = 0;
+  const curOpt = () => p.options ? p.options.choices[optIdx] : null;
+  const optSel = document.getElementById('optSel');
+  const priceEl = document.getElementById('pdpPrice');
+  function refreshPrice(){
+    const add = curOpt() ? curOpt().add : 0;
+    priceEl.textContent = fmt(p.price + add);
+  }
+  if(optSel){ optSel.addEventListener('change', ()=>{ optIdx = +optSel.value; refreshPrice(); }); }
+
+  // quantity stepper + qty-aware add to cart (carries the selected option)
   let qty=1; const qv=document.getElementById('qtyVal');
   document.getElementById('qtyInc').onclick=()=>{qty++;qv.textContent=qty;};
   document.getElementById('qtyDec').onclick=()=>{if(qty>1){qty--;qv.textContent=qty;}};
   document.getElementById('pdpAdd').onclick=()=>{
-    window.Cart.add(p.id, qty);
+    window.Cart.add(p.id, qty, curOpt());
     const b=document.getElementById('pdpAdd'), t=b.innerHTML;
     b.style.background='#16a34a'; b.innerHTML='Added '+qty+' to cart ✓';
     setTimeout(()=>{b.innerHTML=t;b.style.background='';},1300);

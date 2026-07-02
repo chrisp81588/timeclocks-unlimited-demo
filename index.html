@@ -242,7 +242,7 @@
       <div class="hsimg"><img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.src='assets/placeholder.svg'"/></div>
       <span class="hscat">${cat.nav||p.brand||''}</span>
       <span class="hsname">${p.name}</span>
-      <span class="hsprice">${fmt(p.price)}</span>
+      <span class="hsprice">${p.options?'<span style="font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.03em">From</span> ':''}${fmt(p.price)}</span>
     </a>`;
   }).join('');
 

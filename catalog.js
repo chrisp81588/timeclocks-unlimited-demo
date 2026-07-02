@@ -1,6 +1,16 @@
 /* Time Clocks Unlimited — catalog data (real products, models, specs & pricing from timeclocksunltd.com) */
 const IMG = 'assets/products/';
 
+/* Configurable option — NetBell PA "Number of Speakers" (from timeclocksunltd.com:
+   base price includes 2 speakers; each additional speaker adds $394). */
+const SPEAKER_OPTIONS = { label:'Number of Speakers', choices:[
+  { label:'2 Speakers', add:0 },
+  { label:'3 Speakers', add:394 },
+  { label:'4 Speakers', add:788 },
+  { label:'5 Speakers', add:1182 },
+  { label:'6 Speakers', add:1576 }
+]};
+
 const CATEGORIES = [
   {
     id: 'netbell-pa', name: 'NetBell IP Public Address', short: 'IP Paging & PA Systems', nav: 'IP Paging',
@@ -62,18 +72,22 @@ const CATEGORIES = [
 const PRODUCTS = [
   /* ---------- NetBell IP Public Address ---------- */
   { id:'01-910-00057', cat:'netbell-pa', name:'NetBell Warehouse / Factory Paging System', model:'Facility-wide IP paging & break-time system', img:IMG+'01-910-00057-1.jpg', price:2566, list:null, brand:'Linortek',
+    options:SPEAKER_OPTIONS,
     short:'Everything needed for factory/warehouse mass notification — live announcements, pre-recorded messages, fire drills and break-bell scheduling.',
     bullets:['Web-based control of up to 500 programmable events','Extra-loud hardware cuts through industrial noise','Plug-and-play on your existing network, mounting hardware included','Custom or recorded tones; NTP automatic time sync'],
     desc:'Streamline daily operations across large floor plans. This all-in-one IP paging system automates every work bell and break buzzer with synchronized audio cues for lunch and shift changes — ideal for manufacturing plants, distribution centers, bakeries and textile mills.' },
   { id:'01-910-00058', cat:'netbell-pa', name:'School IP Paging Bell System', model:'Campus-wide bells, paging & emergency alerts', img:IMG+'01-910-00058-1.jpg', price:2566, list:null, brand:'Linortek',
+    options:SPEAKER_OPTIONS,
     short:'Connect every speaker through your existing network — automated bell scheduling, campus-wide paging and emergency alerts for schools of any size.',
     bullets:['No expensive contractors or new wiring','Automated class-change & assembly bells','Live and pre-recorded campus announcements','Simple to install, affordable to own'],
     desc:'Transform your school’s communication with a complete IP audio solution: daily bells, all-call paging and critical emergency announcements, all from one web interface.' },
   { id:'01-910-00146', cat:'netbell-pa', name:'Warehouse & Factory Paging with VoIP', model:'VoIP phone integration + automated bells', img:IMG+'01-910-00146-1.jpg', price:2890, list:null, brand:'Linortek',
+    options:SPEAKER_OPTIONS,
     short:'Make announcements directly from any desk phone while automating daily break bells, shift changes and emergency alerts.',
     bullets:['VoIP phone-system integration','Live paging from any handset','Automated break & shift signaling','Emergency notification ready'],
     desc:'Professional industrial communication with VoIP integration — perfect for facilities that want one simple system for mass communication and emergency notification.' },
   { id:'01-910-00137', cat:'netbell-pa', name:'NetBell Emergency Alert & Safety Paging', model:'OSHA-compliant emergency notification', img:IMG+'01-910-00137-1.jpg', price:3051, list:null, brand:'Linortek',
+    options:SPEAKER_OPTIONS,
     short:'IP-based emergency system with instant alerts, pre-recorded messages, live announcements and one-button activation — 10,000 sq ft coverage per speaker.',
     bullets:['One-button instant emergency activation','Real-time voice, pre-recorded or automated triggers','10,000 sq ft coverage per speaker','OSHA-compliant employee alarm; deploys in hours'],
     desc:'Deliver critical information through live voice, pre-recorded messages or automated triggers from connected systems — built for manufacturing facilities, distribution centers and industrial complexes requiring immediate emergency communication.' },

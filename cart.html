@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function(){
   const main=document.getElementById('main');
 
   function lineItems(){ return window.Cart.get().map(i=>({...i, p:getProduct(i.sku)})).filter(x=>x.p); }
-  function subtotal(items){ return items.reduce((s,x)=>s+x.p.price*x.qty,0); }
+  function subtotal(items){ return items.reduce((s,x)=>s+window.Cart.unitPrice(x)*x.qty,0); }
 
   function render(){
     const items=lineItems();
@@ -34,20 +34,24 @@ document.addEventListener('DOMContentLoaded', function(){
       return;
     }
     const sub=subtotal(items), count=items.reduce((n,x)=>n+x.qty,0);
-    const rows=items.map(x=>`
-      <div class="cart-item" data-sku="${x.p.id}">
+    const rows=items.map(x=>{
+      const up=window.Cart.unitPrice(x), lid=window.Cart.lineId(x);
+      const optLbl=(x.opt&&x.opt.label)?`<div class="ci-opt">${x.p.options?x.p.options.label:'Option'}: <b>${x.opt.label}</b></div>`:'';
+      return `
+      <div class="cart-item" data-lid="${lid}">
         <div class="ci-img"><img src="${x.p.img}" alt="${x.p.name}"/></div>
         <div class="ci-mid">
           <div class="ci-name"><a href="product.html?sku=${encodeURIComponent(x.p.id)}">${x.p.name}</a></div>
           <div class="ci-model">${x.p.brand||x.p.sub||''}${x.p.model?' · '+x.p.model:''}</div>
-          <div class="ci-price">${fmt(x.p.price)} <span style="font-weight:400;color:var(--slate-light);font-size:12px">each</span></div>
+          ${optLbl}
+          <div class="ci-price">${fmt(up)} <span style="font-weight:400;color:var(--slate-light);font-size:12px">each</span></div>
           <div class="qty"><button data-dec aria-label="Decrease">−</button><span>${x.qty}</span><button data-inc aria-label="Increase">+</button></div>
         </div>
         <div class="ci-right">
-          <div class="ci-line">${fmt(x.p.price*x.qty)}</div>
+          <div class="ci-line">${fmt(up*x.qty)}</div>
           <button class="ci-remove" data-remove>✕ Remove</button>
         </div>
-      </div>`).join('');
+      </div>`;}).join('');
 
     main.innerHTML=`
     <div class="wrap">
@@ -97,14 +101,14 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 
-  // qty / remove delegation
+  // qty / remove delegation (keyed by line id so option variants are independent)
   main.addEventListener('click',e=>{
     const item=e.target.closest('.cart-item'); if(!item)return;
-    const sku=item.getAttribute('data-sku');
-    const cur=window.Cart.get().find(i=>i.sku===sku); if(!cur)return;
-    if(e.target.closest('[data-inc]')) window.Cart.setQty(sku,cur.qty+1);
-    else if(e.target.closest('[data-dec]')) window.Cart.setQty(sku,cur.qty-1);
-    else if(e.target.closest('[data-remove]')) window.Cart.remove(sku);
+    const lid=item.getAttribute('data-lid');
+    const cur=window.Cart.get().find(i=>window.Cart.lineId(i)===lid); if(!cur)return;
+    if(e.target.closest('[data-inc]')) window.Cart.setQty(lid,cur.qty+1);
+    else if(e.target.closest('[data-dec]')) window.Cart.setQty(lid,cur.qty-1);
+    else if(e.target.closest('[data-remove]')) window.Cart.remove(lid);
   });
   window.addEventListener('cartchange',render);
   render();
