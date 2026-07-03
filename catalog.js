@@ -38,7 +38,24 @@ const CATEGORIES = [
     tagline: 'Facial recognition, fingerprint & cloud software',
     blurb: 'Touch-free facial-recognition and fingerprint terminals that stop "buddy punching" and flow straight into payroll. uAttend cloud clocks with mobile app & PTO tracking, and Qqest TimeForce 2 biometric systems trusted by 46,000+ businesses.',
     icon: 'face', color: '#0a1c2e',
-    subs: ['uAttend Software', 'Qqest Software']
+    subs: ['uAttend Software', 'Qqest Software'],
+    /* uAttend cloud-plan pricing band (content & signup link from timeclocksunltd.com uAttend page —
+       the did= parameter is the dealer ID and must be preserved exactly) */
+    pricingBand: {
+      after: 'uAttend Software',
+      eyebrow: 'uAttend Cloud Plans',
+      title: 'Software Pricing',
+      note: 'All clocks require a monthly subscription — the clocks will not work without one. All monthly cloud account plans are designed for two time clocks, one administrator, and unlimited data exports in .csv format. Add $12/month for each additional time clock over two. Add $8/month for each additional administrator over one. Add $8/month for data exports in formats other than .csv. Plus tax where applicable. Text alerts optional, with plans starting at $9.95 for up to 1,000 texts.',
+      tiers: [
+        { range:'1–9',   price:29 },
+        { range:'10–19', price:49 },
+        { range:'20–49', price:89 },
+        { range:'50–99', price:149 },
+        { range:'100+',  price:199 }
+      ],
+      cta: { label:'Sign Up for Your uAttend Account', url:'https://app1.trackmytime.com/signup/signup.aspx?did=dc7d9&new=0' },
+      callNote: 'When you\'re ready to order your clock, call us and we\'ll help you place the order.'
+    }
   },
   {
     id: 'time-clocks', name: 'Time Clocks', short: 'Amano Punch & Electronic', nav: 'Amano Clocks',

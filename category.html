@@ -52,6 +52,22 @@
       ${title?`<div class="subhead"><h2>${title}</h2><span class="ln"></span><span class="cnt">${groups[k].length} products</span></div>`:''}
       <div class="prod-grid">${groups[k].map(card).join('')}</div>
     </div></section>`;
+    // pricing band (e.g. uAttend cloud plans) pinned directly below its product group
+    const pb = cat.pricingBand;
+    if(pb && pb.after===k){
+      body += `<section class="block" style="padding:10px 0 24px"><div class="wrap">
+        <div class="pricing-band">
+          <span class="eyebrow" style="color:var(--amber)">${pb.eyebrow}</span>
+          <h3>${pb.title}</h3>
+          <div class="pb-tiers">${pb.tiers.map(t=>`<div class="pb-tier"><span class="rng">${t.range}</span><b>$${t.price}<small>/mo</small></b></div>`).join('')}</div>
+          <p class="pb-note">${pb.note}</p>
+          <div class="pb-actions">
+            <a class="btn btn-primary" href="${pb.cta.url}" target="_blank" rel="noopener">${pb.cta.label} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <span class="pb-call">${pb.callNote} <a href="tel:8887341283">888-734-1283</a></span>
+          </div>
+        </div>
+      </div></section>`;
+    }
   });
 
   const benefits = (cat.benefits||[]).map(b=>`<div class="benefit reveal"><span class="bi">${icon('check','#fff').replace('width="24" height="24"','width="20" height="20"')}</span><h4>${b.t}</h4><p>${b.d}</p></div>`).join('');
