@@ -45,6 +45,7 @@ const CATEGORIES = [
       after: 'uAttend Software',
       eyebrow: 'uAttend Cloud Plans',
       title: 'Software Pricing',
+      unit: 'employees', /* tier ranges are employee counts (confirmed by owner) */
       note: 'All clocks require a monthly subscription — the clocks will not work without one. All monthly cloud account plans are designed for two time clocks, one administrator, and unlimited data exports in .csv format. Add $12/month for each additional time clock over two. Add $8/month for each additional administrator over one. Add $8/month for data exports in formats other than .csv. Plus tax where applicable. Text alerts optional, with plans starting at $9.95 for up to 1,000 texts.',
       tiers: [
         { range:'1–9',   price:29 },

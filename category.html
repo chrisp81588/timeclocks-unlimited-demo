@@ -59,7 +59,7 @@
         <div class="pricing-band">
           <span class="eyebrow" style="color:var(--amber)">${pb.eyebrow}</span>
           <h3>${pb.title}</h3>
-          <div class="pb-tiers">${pb.tiers.map(t=>`<div class="pb-tier"><span class="rng">${t.range}</span><b>$${t.price}<small>/mo</small></b></div>`).join('')}</div>
+          <div class="pb-tiers">${pb.tiers.map(t=>`<div class="pb-tier"><span class="rng">${t.range}${pb.unit?' '+pb.unit:''}</span><b>$${t.price}<small>/mo</small></b></div>`).join('')}</div>
           <p class="pb-note">${pb.note}</p>
           <div class="pb-actions">
             <a class="btn btn-primary" href="${pb.cta.url}" target="_blank" rel="noopener">${pb.cta.label} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
