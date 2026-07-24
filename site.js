@@ -53,8 +53,9 @@ function icon(name, stroke){
 }
 
 const PHONE = '888-734-1283';
-const navItems = (CATEGORIES||[]).map(c=>`<a href="category.html?cat=${c.id}">${c.nav||c.short||c.name}</a>`).join('');
-const mmItems = (CATEGORIES||[]).map(c=>`<a class="mm-link" href="category.html?cat=${c.id}">${c.name}</a>`).join('');
+const NAV_CATS = (CATEGORIES||[]).filter(c=>!c.hidden);
+const navItems = NAV_CATS.map(c=>`<a href="category.html?cat=${c.id}">${c.nav||c.short||c.name}</a>`).join('');
+const mmItems = NAV_CATS.map(c=>`<a class="mm-link" href="category.html?cat=${c.id}">${c.name}</a>`).join('');
 
 function logoMark(size){return `<span class="mark" aria-hidden="true"><svg width="${size||24}" height="${size||24}" viewBox="0 0 24 24" fill="none" stroke="#f26a1b" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>`;}
 
@@ -85,7 +86,7 @@ window.cardHTML = function(p){
 const HEADER = `
 <div class="utility"><div class="wrap">
   <div class="u-left">
-    <span class="u-badge"><span class="dot"></span> Authorized dealer · Amano · TimeForce · Linortek &amp; more</span>
+    <span class="u-badge"><span class="dot"></span> Authorized dealer · Amano · Widmer · Linortek &amp; more</span>
     <span class="hide-sm" style="color:#cbd5e1;white-space:nowrap">We ship UPS to the US &amp; Canada</span>
   </div>
   <div class="u-right">
@@ -133,13 +134,13 @@ const FOOTER = `
   <div class="foot-grid">
     <div class="foot-brand">
       <a class="logo" href="index.html">${logoMark(22)}<span>Time Clocks Unlimited</span></a>
-      <p>New England's largest TimeForce dealer — time &amp; attendance systems, break bells, biometrics and the personal service to back them.</p>
+      <p>Time &amp; attendance systems, break bells, biometrics and the personal service to back them — family-run and owner-direct.</p>
       <div class="socials">
         <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2 0-3 1.3-3 3v2H8v3h3v7h3v-7h2.5l.5-3H14V9.3c0-.2.2-.3.5-.3z"/></svg></a>
         <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
       </div>
     </div>
-    <div><h5>Categories</h5><ul>${(CATEGORIES||[]).map(c=>`<li><a href="category.html?cat=${c.id}">${c.name}</a></li>`).join('')}</ul></div>
+    <div><h5>Categories</h5><ul>${NAV_CATS.map(c=>`<li><a href="category.html?cat=${c.id}">${c.name}</a></li>`).join('')}</ul></div>
     <div><h5>Company</h5><ul>
       <li><a href="index.html#why">About Us</a></li><li><a href="index.html#contact">Contact Us</a></li>
       <li><a href="shipping.html">Shipping &amp; Deliveries</a></li><li><a href="returns.html">Returns &amp; Exchanges</a></li><li><a href="faq.html">Site Help / FAQ</a></li>
@@ -150,7 +151,7 @@ const FOOTER = `
       <a href="mailto:info@timeclocksunltd.com">${icon('mail')} info@timeclocksunltd.com</a>
     </div></div>
   </div>
-  <div class="copy"><span>© 2026 Time Clocks Unlimited, LLC. All rights reserved.</span><span>New England's largest TimeForce dealer</span></div>
+  <div class="copy"><span>© 2026 Time Clocks Unlimited, LLC. All rights reserved.</span><span>We service what we sell</span></div>
 </div></footer>`;
 
 document.addEventListener('DOMContentLoaded', ()=>{

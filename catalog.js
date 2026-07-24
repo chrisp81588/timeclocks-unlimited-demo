@@ -82,7 +82,8 @@ const CATEGORIES = [
     id: 'wireless', name: 'Wireless Break Systems', short: 'Wireless Bells & Paging', nav: 'Wireless',
     tagline: 'Cordless break bells, pagers & horn speakers',
     blurb: 'Durable, compact wireless break-bell and paging systems with backup battery — add a speaker anywhere without running wire. Indoor and outdoor units work as pagers, bells, sirens, strobe lights and horn speakers, operating off relay antenna signals.',
-    icon: 'speaker', color: '#0d9488', empty: true
+    icon: 'speaker', color: '#0d9488', empty: true,
+    hidden: true /* removed from nav, homepage grid & footer per owner (2026-07): no products yet; page stays reachable by direct link */
   }
 ];
 
