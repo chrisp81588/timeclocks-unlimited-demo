@@ -1,1 +1,10 @@
 shopify-import/
+
+# Pitch/strategy material must NOT go in this PUBLIC repo.
+# It lives in the private repo: chrisp81588/timeclocks-unlimited-pitch
+*Audit*.pdf
+*Audit*.md
+SEO-Plan.*
+Products-Needing-Decisions.pdf
+How-The-New-Site-Will-Work.pdf
+.claude/
